@@ -2,7 +2,7 @@ import React from 'react'
 import Header from './component/Header'
 import { Container } from 'react-bootstrap'
 import Footer from './component/Footer'
-import HomeScreen from './screens/HomeScreen'
+import { Outlet } from 'react-router-dom'
 
 const App = () => {
   return (
@@ -13,7 +13,8 @@ const App = () => {
           <h1>Welcome To Phihong</h1>
         </Container>
         <Container>
-          <HomeScreen/>
+          {/* ใช้ Outlet แทน HomeScreen component ได้ เนื่องจากกำหนด element ของ path "/" คือ HomeScreen */}
+          <Outlet/>
         </Container>
       </main>
       <Footer/>
