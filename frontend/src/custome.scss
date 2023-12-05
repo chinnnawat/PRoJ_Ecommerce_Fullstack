@@ -1,0 +1,26 @@
+
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+// import bootstrap style at the bottom
+@import '~bootstrap/scss/bootstrap.scss';
+
+
+// overwrite theme
+$secondary: red;
+
+// btn ย้อนกลับ
+.btn {
+    background-color: rgb(173, 162, 162)d5d;
+    border: solid 0.5px #B1B1B1;
+}
+
+.btn-green:hover {
+    background-color: #008556;
+    color: #ffff;
+}
+
+// กรอบ รูป
+.rounded{
+    border: solid 1px #B1B1B1;
+}
+
