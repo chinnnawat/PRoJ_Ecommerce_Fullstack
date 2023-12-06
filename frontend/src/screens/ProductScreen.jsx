@@ -83,7 +83,7 @@ const ProductScreen = () => {
                                     </Row>
                                 </ListGroup.Item>
 
-                                {/* Confirm Buy */}
+                                {/* btn Confirm Buy */}
                                 <ListGroup.Item>
                                     <Row>
                                         <Col>

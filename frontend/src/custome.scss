@@ -8,7 +8,7 @@
 // overwrite theme
 $secondary: red;
 
-// btn ย้อนกลับ
+// overwrite theme btn ย้อนกลับ
 .btn {
     background-color: rgb(173, 162, 162)d5d;
     border: solid 0.5px #B1B1B1;
@@ -19,7 +19,17 @@ $secondary: red;
     color: #ffff;
 }
 
-// กรอบ รูป
+// overwrite theme btn adcart
+.btn-block{
+    background-color: #008556;
+    color: #ffff;
+}
+.btn-block:hover{
+    background-color: #07442e;
+    color: #ffff;
+}
+
+// overwrite theme กรอบ รูป
 .rounded{
     border: solid 1px #B1B1B1;
 }
