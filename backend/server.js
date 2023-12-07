@@ -21,7 +21,10 @@
 import express from "express";
 import products from './data/products.js';
 import dotenv from  'dotenv'
-dotenv.config()
+import connectDB from './config/db.js'
+dotenv.config();
+
+connectDB();
 
 // กำหนด port จากค่าที่ระบุใน .env หากไม่ได้ระบุใน .env จะใช้ค่า 5000 เป็นค่าเริ่มต้น
 const port = process.env.PORT || 5000;
