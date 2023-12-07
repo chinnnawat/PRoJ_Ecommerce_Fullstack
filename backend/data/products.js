@@ -19,7 +19,7 @@ const products = [
   {
     _id: '2',
     name: 'ไอศกรีม รสสตอเบอรี่',
-    image: '/images/ไอศกรีม รสสตอเบอรี่.png',
+    image: '/images/Strawberry-Ice-Cream.png',
     description:
       'Introducing the iPhone 11 Pro. A transformative triple-camera system that adds tons of capability without complexity. An unprecedented leap in battery life',
     brand: 'Phithong',
@@ -34,7 +34,7 @@ const products = [
   {
     _id: '3',
     name: 'ไอศกรีม รสกะทิ',
-    image: '/images/ไอศกรีม รสกะทิ.png',
+    image: '/images/Coconut-ice-cream.png',
     description:
       'Introducing the iPhone 11 Pro. A transformative triple-camera system that adds tons of capability without complexity. An unprecedented leap in battery life',
     brand: 'Phithong',
@@ -49,7 +49,7 @@ const products = [
   {
     _id: '4',
     name: 'ไอศกรีม รสชาไทย',
-    image: '/images/ไอศกรีม รสชาไทย.png',
+    image: '/images/Ice-cream-Thai-tea.png',
     description:
       'Introducing the iPhone 11 Pro. A transformative triple-camera system that adds tons of capability without complexity. An unprecedented leap in battery life',
     brand: 'Phithong',
@@ -64,7 +64,7 @@ const products = [
   {
     _id: '5',
     name: 'ไอศกรีม รสช็อกโกแลต',
-    image: '/images/ไอศกรีม รสช็อกโกแลต.png',
+    image: '/images/Chocolate-Ice-cream.png',
     description:
       'Introducing the iPhone 11 Pro. A transformative triple-camera system that adds tons of capability without complexity. An unprecedented leap in battery life',
     brand: 'Phithong',
@@ -79,7 +79,7 @@ const products = [
   {
     _id: '6',
     name: 'ไอศกรีม รสวนิลาชิพ',
-    image: '/images/ไอศกรีม รสวนิลาชิพ.png',
+    image: '/images/Ice-cream-vanilla.png',
     description:
       'Introducing the iPhone 11 Pro. A transformative triple-camera system that adds tons of capability without complexity. An unprecedented leap in battery life',
     brand: 'Phithong',
@@ -94,7 +94,7 @@ const products = [
   {
     _id: '7',
     name: 'ไอศกรีม รสชาเขียว',
-    image: '/images/ไอศกรีม รสชาเขียว.png',
+    image: '/images/Green-tea-ice-cream.png',
     description:
       'Introducing the iPhone 11 Pro. A transformative triple-camera system that adds tons of capability without complexity. An unprecedented leap in battery life',
     brand: 'Phithong',
@@ -109,7 +109,7 @@ const products = [
   {
     _id: '8',
     name: 'ไอศกรีม รสกาแฟ',
-    image: '/images/ไอศกรีม รสกาแฟ.png',
+    image: '/images/Ice-Cream-coffee.png',
     description:
       'Introducing the iPhone 11 Pro. A transformative triple-camera system that adds tons of capability without complexity. An unprecedented leap in battery life',
     brand: 'Phithong',
@@ -124,7 +124,7 @@ const products = [
   {
     _id: '9',
     name: 'ไอศกรีม กล่อง',
-    image: '/images/ไอศกรีม กล่อง.png',
+    image: '/images/icecream-box.png',
     description:
       'Introducing the iPhone 11 Pro. A transformative triple-camera system that adds tons of capability without complexity. An unprecedented leap in battery life',
     brand: 'Phithong',
@@ -139,7 +139,7 @@ const products = [
   {
     _id: '10',
     name: 'ไอศกรีม ขนมปัง',
-    image: '/images/ไอศกรีม ขนมปัง.jpg',
+    image: '/images/ice-cream-bread.jpg',
     description:
       'Introducing the iPhone 11 Pro. A transformative triple-camera system that adds tons of capability without complexity. An unprecedented leap in battery life',
     brand: 'Phithong',

@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {Link, useParams} from 'react-router-dom';
-import products from '../products';
+
 import Rating from '../component/Rating';
 import { Col, Row, Image, ListGroup, Card, Container, Button } from 'react-bootstrap';
+import axios from 'axios'
 
 const ProductScreen = () => {
     // ใช้ useParams เพื่อดึงค่าพารามิเตอร์จาก URL
@@ -13,10 +14,19 @@ const ProductScreen = () => {
 
     // ค้นหาสินค้าที่มี _id ตรงกับ productId ใน products array
     // ก็คือการ มอบค่าทั้งหมดใน products ให้แก่ product ซึ่งแยกโดยใช้ _id ของสินค้า
-    const product = products.find((p) => p._id === productId)
+    // const product = products.find((p) => p._id === productId)
     
 
-    console.log(product)
+    // กำหนด useState({}) ในที่นี้เป็นการกำหนดค่าเริ่มต้นของ product state ในรูปแบบของอ็อบเจ็กต์ (object) 
+    // ที่มีค่าเป็นวัตถุเปล่า (empty object) {}. โดยปกติแล้ว useState จะมีค่าเริ่มต้นเป็น undefined ถ้าไม่ได้ระบุค่าเริ่มต้น.
+    const [product, setProduct] = useState({});
+    useEffect(() => {
+        const fetchProduct = async() => {
+            const {data} = await axios.get(`/api/products/${productId}`);
+            setProduct(data)
+        }
+        fetchProduct()
+    },[productId])
 
     return (
         <>

@@ -1,10 +1,26 @@
 import React from 'react'
 import { Col, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-import products from '../products'
+import { useEffect, useState } from 'react'
+// import products from '../products'
 import ProductCard from '../component/ProductCard'
+import axios from 'axios'
+
 
 const HomeScreen = () => {
+
+    // ทำการ fetch data (products) ใน url http://localhost:5000/api/products มาใช้งาน แทนการ mock data จากไฟล์ server.js ที่อยู่ใน frontend
+    // ใช้ axios ในการ fetch ข้อมูล
+    const [products, setProducts] = useState([]);
+    useEffect(() => {
+        const fetchProducts = async() => {
+            const {data} = await axios.get('/api/products');
+            setProducts(data)
+        }
+        fetchProducts()
+},[])
+
+
     return (
         <>
             <Row>
