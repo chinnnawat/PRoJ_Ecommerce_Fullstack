@@ -1,6 +1,28 @@
 // ใช้ mogoose ในการเขียน Schema ของ models
 import mongoose from "mongoose";
 
+const reviewSchema = mongoose.Schema({
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'User',
+    },
+    name: {
+        type: String,
+        required: true,
+    },
+    rating: {
+        type: Number,
+        required: true,
+    },
+    comment: {
+        type: String,
+        required: true,
+    }
+},{
+    timestamps: true
+})
+
 // เขียน models ของ product เพื่อดูว่าสินค้า 1 ตัวต้องการเก็บค่าอะไรบ้าง
 const productSchema = new mongoose.Schema({
 
@@ -50,27 +72,7 @@ const productSchema = new mongoose.Schema({
     timestamps: true,
 })
 
-const reviewSchema = mongoose.Schema({
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        ref: 'User',
-    },
-    name: {
-        type: String,
-        required: true,
-    },
-    rating: {
-        type: Number,
-        required: true,
-    },
-    comment: {
-        type: String,
-        required: true,
-    }
-},{
-    timestamps: true
-})
+
 
 // "Product" คือชื่อ Model ที่จะถูกใช้ใน MongoDB. ใน MongoDB, การใช้ชื่อ Model จะแปลงเป็นชื่อคอลเลคชันที่เก็บข้อมูล 
 const Product = mongoose.model("Product", productSchema);

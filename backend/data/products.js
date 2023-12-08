@@ -2,7 +2,6 @@ const products = [
 
   // ไอศกรีม รสมะนาว
   {
-    _id: '1',
     name: 'ไอศกรีม รสมะนาว',
     image: '/images/ice-lemon.png',
     description:
@@ -17,7 +16,6 @@ const products = [
 
   // ไอศกรีม รสสตอเบอรี่
   {
-    _id: '2',
     name: 'ไอศกรีม รสสตอเบอรี่',
     image: '/images/Strawberry-Ice-Cream.png',
     description:
@@ -32,7 +30,6 @@ const products = [
 
   // ไอศกรีม รสกะทิ
   {
-    _id: '3',
     name: 'ไอศกรีม รสกะทิ',
     image: '/images/Coconut-ice-cream.png',
     description:
@@ -47,7 +44,6 @@ const products = [
 
   // ไอศกรีม รสชาไทย
   {
-    _id: '4',
     name: 'ไอศกรีม รสชาไทย',
     image: '/images/Ice-cream-Thai-tea.png',
     description:
@@ -62,7 +58,6 @@ const products = [
 
   // ไอศกรีม รสช็อกโกแลต
   {
-    _id: '5',
     name: 'ไอศกรีม รสช็อกโกแลต',
     image: '/images/Chocolate-Ice-cream.png',
     description:
@@ -77,7 +72,6 @@ const products = [
 
   // ไอศกรีม รสวนิลาชิพ
   {
-    _id: '6',
     name: 'ไอศกรีม รสวนิลาชิพ',
     image: '/images/Ice-cream-vanilla.png',
     description:
@@ -92,7 +86,6 @@ const products = [
 
   //  ไอศกรีม รสชาเขียว
   {
-    _id: '7',
     name: 'ไอศกรีม รสชาเขียว',
     image: '/images/Green-tea-ice-cream.png',
     description:
@@ -107,7 +100,6 @@ const products = [
 
   //  ไอศกรีม รสกาแฟ
   {
-    _id: '8',
     name: 'ไอศกรีม รสกาแฟ',
     image: '/images/Ice-Cream-coffee.png',
     description:
@@ -122,7 +114,6 @@ const products = [
 
   //  ไอศกรีม กล่อง
   {
-    _id: '9',
     name: 'ไอศกรีม กล่อง',
     image: '/images/icecream-box.png',
     description:
@@ -137,7 +128,6 @@ const products = [
 
   // ไอศกรีม ขนมปัง
   {
-    _id: '10',
     name: 'ไอศกรีม ขนมปัง',
     image: '/images/ice-cream-bread.jpg',
     description:
