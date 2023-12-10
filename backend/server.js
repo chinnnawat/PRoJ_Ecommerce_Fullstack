@@ -19,9 +19,10 @@
 // ตัวอย่าง: DELETE /api/products/:id เพื่อลบข้อมูลสินค้าที่มี id ที่ระบุ.
 
 import express from "express";
-import products from './data/products.js';
 import dotenv from  'dotenv'
 import connectDB from './config/db.js'
+import productRoute from './routes/productRoute.js'
+
 dotenv.config();
 
 connectDB();
@@ -36,15 +37,23 @@ app.get('/', (req,res) => {
     res.send('Api is Running...');
 });
 
+
+app.use('/api/products', productRoute);
+
+// ************************* ย้ายส่วนนี้ไปที่ productRoute.js ****************************** //
+
 // เมื่อได้รับ url '/api/products' จะอ่านข้อมูล และจะทำการแสดง(respond) ข้อมูล products ในลักษณะของ json
-app.get('/api/products', (req,res) => {
-    res.json(products)
-});
+// app.get('/api/products', (req,res) => {
+//     res.json(products)
+// });
 
 // ค้นหาสินค้าในอาร์เรย์ products โดยใช้ Array.find() โดยตรวจสอบว่า _id ของสินค้าตรงกับค่าของพารามิเตอร์ :id ที่รับมา.
-app.get('/api/products/:id', (req, res) => {
-    const product = products.find((p) => (p._id === req.params.id))
-    res.json(product)
-})
+// app.get('/api/products/:id', (req, res) => {
+//     const product = products.find((p) => (p._id === req.params.id))
+//     res.json(product)
+// })
+
+// ***************************************************************** //
+
 
 app.listen(port, () => console.log(`Server running on port ${port}`))
