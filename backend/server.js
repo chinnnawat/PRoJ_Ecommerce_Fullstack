@@ -21,7 +21,12 @@
 import express from "express";
 import dotenv from  'dotenv'
 import connectDB from './config/db.js'
+
+// อ่านข้อมูลจาก MongoDB และนำมาใช้งาน
 import productRoute from './routes/productRoute.js'
+
+//
+import {notFound,errorHandler} from './middleware/errorMiddleware.js'
 
 dotenv.config();
 
@@ -55,5 +60,8 @@ app.use('/api/products', productRoute);
 
 // ***************************************************************** //
 
+// ทำการ set เมื่อเกิดการป้อน get request url ที่ไม่ได้ระบุ 
+app.use(notFound)
+app.use(errorHandler)
 
 app.listen(port, () => console.log(`Server running on port ${port}`))

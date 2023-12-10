@@ -18,6 +18,7 @@ router.get('/', asyncHandler(async (req,res) => {
     // ซึ่งจะคืนข้อมูลทั้งหมดที่มีใน collection นั้น ๆ.
     const products = await Product.find({})
 
+    throw new Error('WTF')
     res.json(products)
 }));
 
@@ -31,7 +32,10 @@ router.get('/:id', asyncHandler(async (req, res) => {
     if (product) {
         return res.json(product)
     }
-    res.status(404).json({message: 'Product not Found'})
+    else{
+        res.status(404);
+        throw new Error('Resource Not Found')
+    }
 }))
 
 export default router;
