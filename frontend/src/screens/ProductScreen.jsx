@@ -7,6 +7,9 @@ import { Col, Row, Image, ListGroup, Card, Container, Button } from 'react-boots
 // import axios from 'axios'
 import {useGetProductDetailsQuery} from '../slices/productApiSlices.js'
 
+import Loader from '../component/Loader.jsx';
+import Message from '../component/Message.jsx';
+
 const ProductScreen = () => {
     // ใช้ useParams เพื่อดึงค่าพารามิเตอร์จาก URL
     // ดึงค่า 'id' จาก URL ด้วย useParams
@@ -18,13 +21,13 @@ const ProductScreen = () => {
         <>
             {/* ใช้คลาสเดียวกัน btn-hover-color ที่นี่ */}
             <Link className='btn btn-green my-3' to='/'>ย้อนกลับ</Link>
-
+            
             {isLoading ? (
-                <h2>LOading...</h2>
+                <Loader/>
             ): error ? (
-                <div>
+                <Message variant='danger'>
                     {error?.data?.message || error.error}
-                </div>
+                </Message>
             ): (
                 <>
                 

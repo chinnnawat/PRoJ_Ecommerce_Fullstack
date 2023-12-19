@@ -9,17 +9,19 @@ import ProductCard from '../component/ProductCard'
 // ใช้ {useGetProductsQuery} แทน axios
 import {useGetProductsQuery} from '../slices/productApiSlices.js'
 
+import Loader from '../component/Loader.jsx'
+import Message from '../component/Message.jsx'
 
 const HomeScreen = () => {
     const {data: products, isLoading, error} = useGetProductsQuery()
     return (
         <>
             {isLoading ? (
-                <h2>Loading...</h2>
+                <Loader/>
             ): error ? (
-                <div>
+                <Message variant='danger'>
                     {error?.data?.message || error.error}
-                </div>
+                </Message>
             ) : (
                 <>
                     <Row>
