@@ -16,6 +16,9 @@ import {
 import HomeScreen from './screens/HomeScreen';
 import ProductScreen from './screens/ProductScreen';
 
+import { Provider } from 'react-redux';
+import store from './store';
+
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App/>}>
@@ -28,9 +31,18 @@ const router = createBrowserRouter(
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    {/* RouterProvider ใช้คู่กับ const router ในการกำหนด path และ element ในการแสดงออกตาม path
+
+    {/* <Provider store={store}>: ครอบ component <RouterProvider> */}
+    {/* <Provider> เพื่อให้ component ที่อยู่ภายใน <RouterProvider> สามารถเข้าถึง state 
+    ที่จัดเก็บใน Redux store ได้. <Provider> เป็น component 
+    ที่มาจาก Redux library และรับ store ของ Redux เป็น prop 
+    เพื่อให้ component ที่อยู่ภายในมี aaccess ถึง state และสามารถ dispatch actions 
+    ไปยัง Redux store ได้. */}
+    <Provider store={store}>
+      {/* RouterProvider ใช้คู่กับ const router ในการกำหนด path และ element ในการแสดงออกตาม path
       จากโค้ดบรรทัดล่าง ใช้  router={router} ซึ่งแสดง element คือ App ในการแสดงตาม path "/" */}
-    <RouterProvider router={router}/>
+      <RouterProvider router={router}/>
+    </Provider>
   </React.StrictMode>
 );
 reportWebVitals();
