@@ -1,9 +1,7 @@
 // ********Redux Toolkit เพื่อสร้าง slice ของ Redux สำหรับการจัดการ state ของตะกร้า เช่นการเพิ่ม, ลบสินค้า, จัดการการชำระเงินเป็นต้น (cart)********
 import { createSlice } from '@reduxjs/toolkit'
 
-const addDecimals =(num)=>{
-    return (Math.round(num*100)/100).toFixed(2)
-}
+import {updateCart} from '../utils/cartUtils.js'
 
 // ถูกกำหนดค่าโดยการตรวจสอบว่ามีข้อมูลเก็บใน localStorage หรือไม่ 
 // ถ้ามีจะใช้ข้อมูลนั้นเป็น initialState ถ้าไม่มีจะใช้ {cartItems: []} เป็น initialState แทน
@@ -42,21 +40,8 @@ const cartSlice = createSlice({
                 // ดังนั้น, expression นี้จะสร้าง array ใหม่ที่มีข้อมูลเดิมทั้งหมดของ state.cartItems รวมถึง item ที่ต้องการเพิ่มเข้าไปด้วย.
                 state.cartItems = [...state.cartItems, item];
             }
-
-            // Calculate Items Price
-            state.itemsPrice = addDecimals(state.cartItems.reduce((acc, item) => acc+item.price * item.qty,0));
-
-            // Calculate Shipping Price
-            // Yes = 0 , No = 10
-            state.shippingPrice = addDecimals(state.itemsPrice > 100 ? 0 : 10);
-
-            // Calculate Tax Price (7%tax)
-            state.taxPrice = addDecimals(Number((0.07*state.itemsPrice).toFixed(2)))
-
-            // Total Price
-            state.totalPrice = (Number(state.itemsPrice) + Number(state.taxPrice) + Number(state.shippingPrice)).toFixed(2)
-
-            localStorage.setItem('cart', JSON.stringify(state))
+            return updateCart(state)
+            // localStorage.setItem('cart', JSON.stringify(state))
         },
 
     },

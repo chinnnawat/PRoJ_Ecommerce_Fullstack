@@ -10,7 +10,7 @@ const App = () => {
       <Header/>
       <main className='py-3'>
         <Container>
-          <h1>Welcome To Phihong</h1>
+          {/* <h1>Welcome To Phihong</h1> */}
         </Container>
         <Container>
           {/* ใช้ Outlet แทน HomeScreen component ได้ เนื่องจากกำหนด element ของ path "/" คือ HomeScreen */}
