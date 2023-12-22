@@ -24,9 +24,11 @@ import connectDB from './config/db.js'
 
 // อ่านข้อมูลจาก MongoDB และนำมาใช้งาน
 import productRoute from './routes/productRoute.js'
-
+import userRoutes from './routes/userRoutes.js'
 //
 import {notFound,errorHandler} from './middleware/errorMiddleware.js'
+
+
 
 dotenv.config();
 
@@ -44,6 +46,7 @@ app.get('/', (req,res) => {
 
 
 app.use('/api/products', productRoute);
+app.use('/api/users', userRoutes);
 
 // ************************* ย้ายส่วนนี้ไปที่ productRoute.js ****************************** //
 
