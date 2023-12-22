@@ -45,9 +45,20 @@ const cartSlice = createSlice({
             
         },
 
+        removeFromCart: (state,action) => {
+            // state.cartItems คือ array ของสินค้าในตะกร้าในปัจจุบัน.
+            // .filter((x) => x._id !== action.payload): นี้คือการใช้ filter method 
+            // ของ JavaScript array เพื่อสร้าง array ใหม่ที่มีเฉพาะสินค้าที่มี _id ไม่เท่ากับ 
+            // action.payload (ที่ส่งมาจาก action).
+            // ****สร้าง array ใหม่ ที่ไม่มีข้อมูลของ ตัวที่เลือกใน part action****
+            state.cartItems = state.cartItems.filter((x)=> x._id !== action.payload)
+
+            return updateCart(state)
+        }
+
     },
 })
 
-export const { addToCart } = cartSlice.actions
+export const { addToCart, removeFromCart } = cartSlice.actions
 
 export default cartSlice.reducer
