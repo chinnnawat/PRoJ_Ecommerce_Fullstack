@@ -21,7 +21,7 @@ const cartSlice = createSlice({
             const item = action.payload;
     
             // ตรวจสอบว่าสินค้าที่ต้องการเพิ่มเข้าในตะกร้ามีอยู่แล้วหรือไม่
-            const existItem = state.cartItems.find((x) => x._id === item.id);
+            const existItem = state.cartItems.find((x) => x._id === item._id);
     
             // ถ้าสินค้ามีอยู่ในตะกร้าแล้ว
             if (existItem) {
@@ -40,8 +40,9 @@ const cartSlice = createSlice({
                 // ดังนั้น, expression นี้จะสร้าง array ใหม่ที่มีข้อมูลเดิมทั้งหมดของ state.cartItems รวมถึง item ที่ต้องการเพิ่มเข้าไปด้วย.
                 state.cartItems = [...state.cartItems, item];
             }
-            return updateCart(state)
-            // localStorage.setItem('cart', JSON.stringify(state))
+            updateCart(state)
+            return state;
+            
         },
 
     },
