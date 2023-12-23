@@ -5,7 +5,25 @@ import User from '../models/userModel.js'
 // @route   POST /api/user/login
 // @access  Public
 const authUser = asyncHandler(async(req, res) => {
-    res.send('auth user')
+    // คือการดึงข้อมูล email และ password จาก request body ที่ถูกส่งมาจากผู้ใช้ ซึ่งเป็นข้อมูลที่ผู้ใช้กรอกในฟอร์มหน้าเว็บ.
+    const {email, password} = req.body;
+
+    // ใช้ Mongoose (ODM สำหรับ MongoDB) ในการค้นหาผู้ใช้ในฐานข้อมูล โดยใช้เงื่อนไข {email} เพื่อหาผู้ใช้ที่มีอีเมลที่ตรงกับค่าที่ถูกส่งมา.
+    const user = await User.findOne({email})
+
+    // _id, name, email, และ isAdmin. ส่วนนี้ถูกใช้ในกรณีที่การตรวจสอบการยืนยันตัวตนเป็นที่เรียบร้อยและถูกต้อง.
+    if(user && (await user.matchPassword(password))){
+        res.status(200).json({
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            isAdmin: user.isAdmin,
+        })
+    }
+    else{
+        res.status(401);
+        throw new Error('Invalid email or password')
+    }
 })
 
 // @desc    Register user

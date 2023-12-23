@@ -39,6 +39,10 @@ const port = process.env.PORT || 5000;
 
 const app = express();
 
+// Body Parser middleware
+app.use(express.json())
+app.use(express.urlencoded({extended: true}))
+
 // เมื่อได้รับ url '/' จะอ่านข้อมูล และจะทำการแสดง(respond) ข้อความ Api is Running... บน port 5000
 app.get('/', (req,res) => {
     res.send('Api is Running...');
