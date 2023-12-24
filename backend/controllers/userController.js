@@ -1,5 +1,7 @@
 import asyncHandler from '../middleware/asyncHandler.js'
 import User from '../models/userModel.js'
+import jwt from 'jsonwebtoken';
+
 
 // @desc    Auth user and Get token
 // @route   POST /api/user/login
@@ -13,6 +15,24 @@ const authUser = asyncHandler(async(req, res) => {
 
     // _id, name, email, และ isAdmin. ส่วนนี้ถูกใช้ในกรณีที่การตรวจสอบการยืนยันตัวตนเป็นที่เรียบร้อยและถูกต้อง.
     if(user && (await user.matchPassword(password))){
+
+        const token = jwt.sign({userId: user._id}, process.env.JWT_SECRET,{
+            expiresIn: '30d'
+        });
+
+        // Set JWT as HPPT-Only cookie
+        res.cookie('jwt', token, {
+
+            // ทำให้คุกกี้เข้าถึงได้เฉพาะผ่าน HTTP headers เท่านั้น และป้องกันการเข้าถึงผ่าน JavaScript ที่ทำงานในบราวเซอร์.
+            httpOnly: true,
+            
+            secure: process.env.NODE_ENV !== 'development',
+
+            //จำกัดการส่งคุกกี้เฉพาะถึงเว็บไซต์ที่ส่งคำขอเท่านั้น (ไม่ส่งให้โดเมนอื่น).
+            sameSite: 'strict',
+            maxAge: 30*24*60*60*1000, // 30 days
+        })
+
         res.status(200).json({
             _id: user._id,
             name: user.name,

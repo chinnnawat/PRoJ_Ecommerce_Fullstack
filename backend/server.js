@@ -28,6 +28,9 @@ import userRoutes from './routes/userRoutes.js'
 //
 import {notFound,errorHandler} from './middleware/errorMiddleware.js'
 
+// ใช้สำหรับการดึงข้อมูลจาก cookies ที่ถูกส่งมาจาก client
+import cookieParser from "cookie-parser";
+
 
 
 dotenv.config();
@@ -42,6 +45,9 @@ const app = express();
 // Body Parser middleware
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
+
+// Cookie Parser Middleware
+app.use(cookieParser());
 
 // เมื่อได้รับ url '/' จะอ่านข้อมูล และจะทำการแสดง(respond) ข้อความ Api is Running... บน port 5000
 app.get('/', (req,res) => {

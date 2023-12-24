@@ -7,15 +7,17 @@ import {authUser,
     getUsers,
     getUserByID,
     deleteUser,
-    updateUser} from '../controllers/userController.js';
+    updateUser} from '../controllers/userController.js'
+
+import {protect,admin} from '../middleware/authMiddleware.js'
 
 const router = express.Router()
 
 //  (baseURL/users/) = (/) => baseURL = http://localhost:5000/api
-router.route('/').post(registerUser).get(getUsers);
+router.route('/').post(registerUser).get(protect, admin, getUsers);
 router.post('/logout', logoutUser);
-router.post('/login',authUser);
-router.route('/profile').get(getUserProfile).put(updateUserProfile);
-router.route('/:id').delete(deleteUser).get(getUserByID).put(updateUser)
+router.post('/auth',authUser);
+router.route('/profile').get(protect, getUserProfile).put(protect, updateUserProfile);
+router.route('/:id').delete(protect, admin, deleteUser).get(protect, admin, getUserByID).put(protect, admin, updateUser)
 
 export default router

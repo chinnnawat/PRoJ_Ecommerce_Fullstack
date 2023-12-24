@@ -24,6 +24,8 @@ const userSchema = new mongoose.Schema({
     timestamps: true,
 });
 
+// bcrypt.compare ใช้เพื่อเปรียบเทียบรหัสผ่านที่ผู้ใช้ป้อนเข้ามา (enteredPassword) 
+// กับรหัสผ่านที่เก็บในฐานข้อมูล (this.password).
 userSchema.methods.matchPassword = async function (enteredPassword){
     return await bcrypt.compare(enteredPassword, this.password)
 }
