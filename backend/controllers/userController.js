@@ -1,6 +1,6 @@
 import asyncHandler from '../middleware/asyncHandler.js'
 import User from '../models/userModel.js'
-import jwt from 'jsonwebtoken';
+import generateToken from '../utils/generateToken.js';
 
 
 // @desc    Auth user and Get token
@@ -15,23 +15,7 @@ const authUser = asyncHandler(async(req, res) => {
 
     // _id, name, email, และ isAdmin. ส่วนนี้ถูกใช้ในกรณีที่การตรวจสอบการยืนยันตัวตนเป็นที่เรียบร้อยและถูกต้อง.
     if(user && (await user.matchPassword(password))){
-
-        const token = jwt.sign({userId: user._id}, process.env.JWT_SECRET,{
-            expiresIn: '30d'
-        });
-
-        // Set JWT as HPPT-Only cookie
-        res.cookie('jwt', token, {
-
-            // ทำให้คุกกี้เข้าถึงได้เฉพาะผ่าน HTTP headers เท่านั้น และป้องกันการเข้าถึงผ่าน JavaScript ที่ทำงานในบราวเซอร์.
-            httpOnly: true,
-            
-            secure: process.env.NODE_ENV !== 'development',
-
-            //จำกัดการส่งคุกกี้เฉพาะถึงเว็บไซต์ที่ส่งคำขอเท่านั้น (ไม่ส่งให้โดเมนอื่น).
-            sameSite: 'strict',
-            maxAge: 30*24*60*60*1000, // 30 days
-        })
+        generateToken(res, user._id)
 
         res.status(200).json({
             _id: user._id,
@@ -50,7 +34,39 @@ const authUser = asyncHandler(async(req, res) => {
 // @route   POST /api/user
 // @access  Public
 const registerUser = asyncHandler(async(req, res) => {
-    res.send('register user')
+    // ทำการดึงข้อมูล name, email, และ password ที่ถูกส่งมาใน req.body (ส่วนข้อมูลที่ผู้ใช้กรอกในฟอร์มหน้าเว็บ)
+    const {name,email,password} = req.body
+
+    // ตรวจสอบว่ามีผู้ใช้ที่มีอีเมลที่ถูกส่งมาแล้วหรือยัง โดยใช้ Mongoose
+    const userExists = await User.findOne({ email });
+
+    if (userExists){
+        res.status(400);
+        throw new Error('User already exists');
+    }
+
+    // สร้างผู้ใช้ใหม่ในฐานข้อมูลโดยใช้ User.create()
+    const user = await User.create({
+        name,
+        email,
+        password
+    })
+
+    // ตรวจสอบว่าการสร้างผู้ใช้สำเร็จหรือไม่
+    if (user){
+        // ถ้าสำเร็จ, จะทำการสร้าง token และส่งคำตอบกลับไปยัง client
+        generateToken(res,user._id)
+        res.status(201).json({
+            _id: user._id,
+            name : user.name,
+            email:user.email,
+            isAdmin: user.isAdmin,
+        })
+    }
+    else{
+        res.status(400);
+        throw new Error('User already exists');
+    }
 })
 
 // @desc    Logout user / clear cookie
