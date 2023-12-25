@@ -56,8 +56,18 @@ const registerUser = asyncHandler(async(req, res) => {
 // @desc    Logout user / clear cookie
 // @route   POST /api/user/logout
 // @access  Private
-const logoutUser = asyncHandler(async(req, res) => {
-    res.send('Logout user')
+const logoutUser = asyncHandler(async(req,res)=>{
+
+    // ส่วนนี้ใช้สร้างคุกกี้ชื่อ 'jwt' และกำหนดให้มีค่าเป็นว่าง ๆ ('')
+    res.cookie('jwt','',{
+        httpOnly: true,
+
+        // หมายถึงคุกกี้นี้จะหมดอายุทันที (expired).
+        expires: new Date(0)
+    });
+
+    // ใช้รหัสสถานะ HTTP 200 (OK)
+    res.status(200).json({message: 'Logged out Successfully'})
 })
 
 // @desc    Get user Profile
