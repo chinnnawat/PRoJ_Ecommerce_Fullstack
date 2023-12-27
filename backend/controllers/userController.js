@@ -1,7 +1,6 @@
-import asyncHandler from '../middleware/asyncHandler.js'
-import User from '../models/userModel.js'
+import asyncHandler from '../middleware/asyncHandler.js';
+import User from '../models/userModel.js';
 import generateToken from '../utils/generateToken.js';
-
 
 // @desc    Auth user and Get token
 // @route   POST /api/user/login
@@ -90,14 +89,49 @@ const logoutUser = asyncHandler(async(req,res)=>{
 // @route   Get /api/user/profile
 // @access  Private
 const getUserProfile = asyncHandler(async(req, res) => {
-    res.send('get user profile')
+    const user = await User.findById(req.user._id)
+    if (user){
+        res.status(200).json({
+            _id : user._id,
+            name : user.name,
+            email : user.email,
+            isAdmin : user.isAdmin
+        })
+    }else{
+        res.status(404);
+        throw new Error('User not Found');
+    }
 })
 
 // @desc    Update user Profile
 // @route   PUT /api/user/profile
 // @access  Private
 const updateUserProfile = asyncHandler(async(req, res) => {
-    res.send('update user profile')
+    const user = await User.findById(req.user._id)
+    if(user){
+        // ทำการอัปเดต name และ email ของผู้ใช้ตามค่าที่ระบุในข้อมูลคำขอ
+        user.name = req.body.name || user.name;
+        user.email = req.body.email || user.email;
+
+        // หากมีรหัสผ่านใหม่ที่ระบุในข้อมูลคำขอ จะทำการอัปเดตรหัสผ่านของผู้ใช้ด้วย
+        if(req.body.password){
+            user.password = req.body.password
+        };
+
+        const updatedUser = await user.save();
+
+        // ส่งคำตอบ JSON กลับไปยังไคลเอ็นต์ ประกอบด้วยข้อมูลผู้ใช้ที่อัปเดต ซึ่งรวมถึง ID (_id) ชื่อ อีเมล และสถานะ isAdmin
+        res.status(200).json({
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        isAdmin: updatedUser.isAdmin
+    });
+    }
+    else{
+        res.status(404);
+        throw new Error('User not found');
+    }
 })
 
 // @desc    Get user
