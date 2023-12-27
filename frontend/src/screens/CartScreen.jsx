@@ -87,7 +87,10 @@ const CartScreen = () => {
                         </ListGroup.Item>
                     </ListGroup>
                     <ListGroup.Item>
-                        <Button type='button' className='btn-block' disabled={cartItems.length === 0} onClick={checkOutHandler}>
+                        {/* m: หมายถึง margin.
+                            y: หมายถึง margin ในแนวทแยง (vertical axis), ซึ่งหมายถึง top และ bottom margins.
+                            3: หมายถึง 3 units ของขนาด margin. */}
+                        <Button type='button' className='btn-block my-2 mx-2' disabled={cartItems.length === 0} onClick={checkOutHandler}>
                             Process To Checkout
                         </Button>
                     </ListGroup.Item>
