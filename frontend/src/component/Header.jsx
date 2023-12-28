@@ -1,14 +1,36 @@
 import React from 'react'
-import { Badge, Navbar , Nav , Container, Image} from 'react-bootstrap';
+import { Badge, Navbar , Nav , Container, Image, NavDropdown} from 'react-bootstrap';
 import {FaShoppingCart, FaUser, FaStar} from 'react-icons/fa';
 // import logoImage from '../../public/logo-removebg-preview.png'
 import logo from '../../src/assests/logo-removebg-preview.png'
 import { LinkContainer } from 'react-router-bootstrap'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux';
+import { useLogoutMutation } from '../slices/usersApiSlice';
+import { logout } from '../slices/authSlice';
+import { useNavigate } from 'react-router-dom';
+
 
 const Header = () => {
+    // ฟังก์ชันที่ถูกส่งเข้าไปใน useSelector มีการเลือก state.cart ซึ่งหมายถึง state ที่ชื่อ "cart" ใน Redux store.
+    // useSelector ใช้เพื่อเลือกข้อมูลที่อยู่ใน Redux
     const {cartItems} = useSelector((state) => state.cart);
-    console.log(cartItems)
+
+    const { userInfo } = useSelector((state) => state.auth);
+
+    const[logoutApiCall] = useLogoutMutation();
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const logoutHandler = async() =>{
+        try {
+            await logoutApiCall().unwrap();
+            dispatch(logout());
+            navigate('/');
+        } catch (err) {
+            console.log(err);
+        }
+    }
 
     return (
         <header>
@@ -39,11 +61,25 @@ const Header = () => {
                                     }
                                 </Nav.Link>
                             </LinkContainer>
-                            <LinkContainer to='/login'>
-                                <Nav.Link>
-                                    <FaUser/> LOGIN OR REGISTER
-                                </Nav.Link>
-                            </LinkContainer>
+
+                            {/* userInfo */}
+                            {userInfo ? (
+                                <NavDropdown title={userInfo.name} id='username'>
+                                    <LinkContainer to='/profile'>
+                                        <NavDropdown.Item>Profile</NavDropdown.Item>
+                                    </LinkContainer>
+                                    <NavDropdown.Item onClick={logoutHandler}>
+                                        LogOut
+                                    </NavDropdown.Item>
+                                </NavDropdown>
+                            ) : (
+                                <LinkContainer to='/login'>
+                                    <Nav.Link>
+                                        <FaUser/> LOGIN OR REGISTER
+                                    </Nav.Link>
+                                </LinkContainer>
+                            )}
+                            
                         </Nav>
                     </Navbar.Collapse>
                 </Container>

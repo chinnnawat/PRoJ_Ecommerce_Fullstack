@@ -29,6 +29,16 @@ $secondary: red;
     color: #ffff;
 }
 
+// Submit btn
+.btnt-green{
+    background-color: #008556;
+    color: #ffff;
+}
+.btnt-green:hover{
+    background-color: #07442e;
+    color: #ffff;
+}
+
 // overwrite theme กรอบ รูป
 .rounded{
     border: solid 1px #B1B1B1;
