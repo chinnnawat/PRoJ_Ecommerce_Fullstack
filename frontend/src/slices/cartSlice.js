@@ -5,7 +5,7 @@ import {updateCart} from '../utils/cartUtils.js'
 
 // ถูกกำหนดค่าโดยการตรวจสอบว่ามีข้อมูลเก็บใน localStorage หรือไม่ 
 // ถ้ามีจะใช้ข้อมูลนั้นเป็น initialState ถ้าไม่มีจะใช้ {cartItems: []} เป็น initialState แทน
-const initialState = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : {cartItems:[]};
+const initialState = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : {cartItems:[],shippingAddress:[],paymentMethod: 'PayPal'};
 
 // createSlice ถูกเรียกเพื่อสร้าง Redux slice โดยมีชื่อว่า 'cart'
 const cartSlice = createSlice({
@@ -54,11 +54,16 @@ const cartSlice = createSlice({
             state.cartItems = state.cartItems.filter((x)=> x._id !== action.payload)
 
             return updateCart(state)
+        },
+
+        saveShippingAddress: (state,action) => {
+            state.shippingAddress = action.payload;
+            return updateCart(state)
         }
 
     },
 })
 
-export const { addToCart, removeFromCart } = cartSlice.actions
+export const { addToCart, removeFromCart, saveShippingAddress } = cartSlice.actions
 
 export default cartSlice.reducer
