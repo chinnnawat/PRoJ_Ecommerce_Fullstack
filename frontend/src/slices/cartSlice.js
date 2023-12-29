@@ -1,4 +1,7 @@
+
+
 // ********Redux Toolkit เพื่อสร้าง slice ของ Redux สำหรับการจัดการ state ของตะกร้า เช่นการเพิ่ม, ลบสินค้า, จัดการการชำระเงินเป็นต้น (cart)********
+
 import { createSlice } from '@reduxjs/toolkit'
 
 import {updateCart} from '../utils/cartUtils.js'
@@ -59,11 +62,21 @@ const cartSlice = createSlice({
         saveShippingAddress: (state,action) => {
             state.shippingAddress = action.payload;
             return updateCart(state)
+        },
+
+        savePaymentMethod: (state,action) => {
+            state.paymentMethod = action.payload;
+            return updateCart(state)
         }
 
     },
 })
 
-export const { addToCart, removeFromCart, saveShippingAddress } = cartSlice.actions
+export const { 
+    addToCart, 
+    removeFromCart, 
+    saveShippingAddress,
+    savePaymentMethod,    
+} = cartSlice.actions
 
 export default cartSlice.reducer
