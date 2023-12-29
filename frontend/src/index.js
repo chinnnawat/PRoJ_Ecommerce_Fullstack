@@ -1,6 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+
+// Route
 import App from './App';
+import PrivateRoute from './component/PrivateRoute';
+
 import reportWebVitals from './reportWebVitals';
 // import 'bootstrap/dist/css/bootstrap.min.css';
 import './custome.scss'
@@ -34,7 +38,11 @@ const router = createBrowserRouter(
       <Route path='/cart' element={<CartScreen/>}/>
       <Route path='/login' element={<LoginScreen/>}/>
       <Route path='/register' element={<RegisterScreen/>}/>
-      <Route path='/shipping' element={<ShippingScreen/>}/>
+
+      <Route path='' element={<PrivateRoute/>}>
+        <Route path='/shipping' element={<ShippingScreen/>}/>
+      </Route>
+
       {/* My Self */}
       <Route path='/all' element={<AllProduct/>}/>
 

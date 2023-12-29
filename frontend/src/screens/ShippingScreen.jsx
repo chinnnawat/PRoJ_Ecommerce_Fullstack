@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import FormContainer from '../component/FormContainer';
 import { Form, Button } from 'react-bootstrap';
 import { saveShippingAddress } from '../slices/cartSlice';
+import CheckoutSteps from '../component/CheckoutSteps';
 
 const ShippingScreen = () => {
     // redux
@@ -27,6 +28,7 @@ const ShippingScreen = () => {
 
     return (
         <FormContainer>
+            <CheckoutSteps step1 step2 step3 step4/>
             <h1>ShippingCart</h1>
             <Form onSubmit={submitHandler}>
                 {/* Address */}
