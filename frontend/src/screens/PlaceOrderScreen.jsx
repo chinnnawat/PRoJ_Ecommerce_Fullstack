@@ -5,7 +5,7 @@ import { useCreateOrderMutation } from '../slices/orderApiSlice';
 import CheckoutSteps from '../component/CheckoutSteps';
 import { Button, Card, Col, Image, ListGroup, Row } from 'react-bootstrap';
 import Message from '../component/Message';
-import e from 'express';
+
 
 const PlaceOrderScreen = () => {
     const navigate = useNavigate();
@@ -24,7 +24,7 @@ const PlaceOrderScreen = () => {
 
     // Btn
     const placeOrderHandler = (e) => {
-        // e.preventDefault();
+        e.preventDefault();
         console.log("hi")
     }
 
