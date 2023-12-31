@@ -12,7 +12,6 @@ const addOrderItems = asyncHandler(async(req,res) => {
         orderItems,
         ShippingAddress,
         paymentMethod,
-        paymentResult,
         itemsPrice,
         taxPrice,
         shippingPrice,
@@ -30,14 +29,13 @@ const addOrderItems = asyncHandler(async(req,res) => {
     }
     else{
         const order = new Order({
-            orderItems: order.map((x) => ({...x,
+            orderItems: orderItems.map((x) => ({...x,
                 product: x._id,
                 // _id: undefined ทำให้ MongoDB ไม่ต้องการสร้าง _id ใหม่แต่ใช้ค่า _id ที่ถูกส่งมาในแต่ละรายการจาก orderItems.
                 _id: undefined})),
             user:req.user._id,
             ShippingAddress,
             paymentMethod,
-            paymentResult,
             itemsPrice,
             taxPrice,
             shippingPrice,

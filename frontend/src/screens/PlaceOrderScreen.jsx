@@ -5,27 +5,42 @@ import { useCreateOrderMutation } from '../slices/orderApiSlice';
 import CheckoutSteps from '../component/CheckoutSteps';
 import { Button, Card, Col, Image, ListGroup, Row } from 'react-bootstrap';
 import Message from '../component/Message';
+import { clearCartItem } from '../slices/cartSlice.js'
+import { toast } from 'react-toastify'
 
 
 const PlaceOrderScreen = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const cart = useSelector((state) => state.cart)
-    const [ceateOrder, {isLoading, error}] = useCreateOrderMutation();
+    const [createOrder, {isLoading, error}] = useCreateOrderMutation();
 
     useEffect(()=>{
         if(!cart.shippingAddress.address){
             navigate('/shipping')
         }
         else if (!cart.paymentMethod){
-            navigate('/patment')
+            navigate('/payment')
         }
     },[cart.paymentMethod, cart.shippingAddress.address, navigate]);
 
     // Btn
-    const placeOrderHandler = (e) => {
-        e.preventDefault();
-        console.log("hi")
+    const placeOrderHandler = async() => {
+        try {
+            const res = await createOrder({
+                orderItems : cart.cartItems,
+                ShippingAddress : cart.shippingAddress,
+                paymentMethod: cart.paymentMethod,
+                itemsPrice: cart.itemsPrice,
+                shippingPrice: cart.shippingPrice,
+                taxPrice: cart.taxPrice,
+                totalPrice: cart.totalPrice,
+            }).unwrap();
+            dispatch(clearCartItem());
+            navigate(`/order/${res._id}`)
+        } catch (error) {
+            toast.error(error);
+        }
     }
 
     return (
