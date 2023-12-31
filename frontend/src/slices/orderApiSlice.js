@@ -1,3 +1,5 @@
+// เชื่อม backend and frontend
+
 import { apiSlice } from './apiSlice.js';
 import { ORDERS_URL } from '../constance.js';
 
@@ -28,5 +30,6 @@ export const orderApiSlice = apiSlice.injectEndpoints({
 
 export const { 
     useCreateOrderMutation,
+    useGetOrderDetailsQuery,
 
 } = orderApiSlice

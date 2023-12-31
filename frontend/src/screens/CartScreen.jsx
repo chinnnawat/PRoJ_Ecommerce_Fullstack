@@ -44,7 +44,7 @@ const CartScreen = () => {
                                     </Col>
                                     {/* Product Name */}
                                     <Col md={3}>
-                                        <Link to={`/product/${item._id}`}>{item.name}</Link>
+                                        <Link to={`/products/${item._id}`}>{item.name}</Link>
                                     </Col>
                                     {/* Price */}
                                     <Col md={2}>
