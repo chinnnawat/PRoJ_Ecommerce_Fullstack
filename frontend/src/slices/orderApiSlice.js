@@ -28,7 +28,7 @@ export const orderApiSlice = apiSlice.injectEndpoints({
         // .mutation จะทำการสร้าง mutation object 
         // ที่ใช้ในการ dispatch actions, ทำ network requests และจัดการกับ state ของ Redux
         payOrder: builder.mutation({
-            query: (orderId, details) => ({
+            query: ({orderId, details}) => ({
                 url: `${ORDERS_URL}/${orderId}/pay`,
                 method: 'PUT',
                 body:{...details},
