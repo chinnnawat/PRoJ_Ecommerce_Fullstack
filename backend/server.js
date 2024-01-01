@@ -60,6 +60,9 @@ app.use('/api/products', productRoute);
 app.use('/api/users', userRoutes);
 app.use('/api/orders', orderRoute);
 
+// Paypal
+app.get('/api/config/paypal', (req,res) => res.send({clientId: process.env.PAYPAL_CLIENT_ID}));
+
 // ************************* ย้ายส่วนนี้ไปที่ productRoute.js ****************************** //
 
 // เมื่อได้รับ url '/api/products' จะอ่านข้อมูล และจะทำการแสดง(respond) ข้อมูล products ในลักษณะของ json

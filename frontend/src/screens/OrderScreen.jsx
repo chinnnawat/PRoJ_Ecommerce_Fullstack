@@ -1,18 +1,58 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Message from '../component/Message.jsx';
 import Loader from '../component/Loader.jsx';
-import { useGetOrderDetailsQuery } from '../slices/orderApiSlice.js'
+import { 
+    useGetOrderDetailsQuery,
+    useGetPayPalClientIdQuery,
+    usePayOrderMutation,
+} from '../slices/orderApiSlice.js'
 import { Link, useParams } from 'react-router-dom';
 import { Col, ListGroup, Row, Image, Card } from 'react-bootstrap';
+import { toast } from 'react-toastify'
+// Paypal
+import {PayPalButtons, usePayPalScriptReducer} from '@paypal/react-paypal-js'
+import { useSelector } from 'react-redux';
 
 const OrderScreen = () => {
+    // ใช้ Hook useParams จาก React Router เพื่อดึงค่า parameter ชื่อ id จาก URL.
+    // การดึงค่านี้จะนำไปใช้เป็น orderId ในการดึงข้อมูลการสั่งซื้อ
     const { id: orderId } = useParams();
+
+    // ใช้ useGetOrderDetailsQuery จาก RTK Query เพื่อดึงข้อมูลการสั่งซื้อ (order) โดยใช้ orderId ที่ได้จาก URL
     const {
         data: order,
         refetch,
         isLoading,
         error
     } = useGetOrderDetailsQuery(orderId)
+
+    // สร้าง mutation เพื่อทำการชำระเงินสำหรับการสั่งซื้อ.
+    const [payOrder, {isLoading: loadingPay}] = usePayOrderMutation();
+    const [{isPending}, paypalDispatch] = usePayPalScriptReducer();
+    const {userInfo} = useSelector((state) => state.auth);
+    const {data:paypal, isLoading: loadingPayPal, error:errorPayPal} = useGetPayPalClientIdQuery();
+
+    // เป็น Effect ที่ทำงานเมื่อค่า order, paypal, paypalDispatch, loadingPayPal, หรือ errorPayPal เปลี่ยนแปลง.
+    useEffect(() => {
+        if(!errorPayPal && !loadingPayPal && paypal.clientId) {
+            const loadingPayPalScript = async() => {
+                paypalDispatch({
+                    type: 'resetOptions',
+                    value: {
+                        'client-id' : paypal.clientId,
+                        currency: 'USD'
+                    }
+                });
+                paypalDispatch({type: 'setLoadingStatus', value:'pending'});
+            }
+            if (order && !order.isPaid){
+                if(!window.paypal){
+                    loadingPayPalScript()
+                }
+            }
+        }
+    },[order, paypal,paypalDispatch,loadingPayPal,errorPayPal])
+
 
     return isLoading ? <Loader/> : error ? <Message variant='danger'/> : (
         <>
@@ -40,6 +80,7 @@ const OrderScreen = () => {
                             </p>
 
                             {/* data from mongo orderModel.js */}
+                            {/* Delivery Status */}
                             { order.isDelivered ? (
                                 <Message variant='success'>
                                     จัดส่งแล้ว
@@ -51,8 +92,24 @@ const OrderScreen = () => {
                             ) }
                         </ListGroup.Item>
 
+                        {/* PayMent Status */}
+                        {/* data from mongo orderModel.js */}
                         <ListGroup.Item>
-                            <h2>Order Items</h2>
+                            <h2>สถานะการชำระสินค้า</h2>
+                            <p>วิธีการชำระสินค้า : {order.paymentMethod}</p>
+                            { order.isPaid ? (
+                                <Message variant='success'>
+                                    ชำระสินค้าแล้ว
+                                </Message>
+                            ) : (
+                                <Message variant='danger'>
+                                    ยังไม่ได้ชำระสินค้า
+                                </Message>
+                            ) }
+                        </ListGroup.Item>
+
+                        <ListGroup.Item>
+                            <h2>รายการสินค้า</h2>
                             {/* orderItems from mongoDB by(orderModel.js) */}
                             {order.orderItems.map((item,index) => (
                                 <ListGroup.Item key={index}>
@@ -80,6 +137,7 @@ const OrderScreen = () => {
                     </ListGroup>
                 </Col>
 
+                {/* Conclusion */}
                 <Col md={4}>
                     <Card>
                         {/* data from mongoDB by(orderModel.js) */}
@@ -108,8 +166,13 @@ const OrderScreen = () => {
                                 </Row>
                             </ListGroup.Item>
 
+                            {/* Data paid or not from mongoDB (orderModel.js) */}
                             {/* Pay Order PlaceOrder */}
-                            
+                            {/* {!order.isPaid && (
+                                <ListGroup.Item>
+
+                                </ListGroup.Item>
+                            )} */}
                             {/* Mark As Delivered PlaceOrder */}
 
                         </ListGroup>

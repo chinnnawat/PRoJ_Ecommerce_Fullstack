@@ -33,6 +33,9 @@ import OrderScreen from './screens/OrderScreen';
 import { Provider } from 'react-redux';
 import store from './store';
 
+// Paypal Provider
+import {PayPalScriptProvider} from '@paypal/react-paypal-js';
+
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App/>}>
@@ -69,7 +72,9 @@ root.render(
     <Provider store={store}>
       {/* RouterProvider ใช้คู่กับ const router ในการกำหนด path และ element ในการแสดงออกตาม path
       จากโค้ดบรรทัดล่าง ใช้  router={router} ซึ่งแสดง element คือ App ในการแสดงตาม path "/" */}
-      <RouterProvider router={router}/>
+      <PayPalScriptProvider deferLoading={true}>
+        <RouterProvider router={router}/>
+      </PayPalScriptProvider>
     </Provider>
   </React.StrictMode>
 );
