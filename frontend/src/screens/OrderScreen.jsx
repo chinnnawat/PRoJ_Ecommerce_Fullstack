@@ -7,11 +7,11 @@ import {
     usePayOrderMutation,
 } from '../slices/orderApiSlice.js'
 import { Link, useParams } from 'react-router-dom';
-import { Col, ListGroup, Row, Image, Card, Button } from 'react-bootstrap';
+import { Col, ListGroup, Row, Image, Card } from 'react-bootstrap';
 import { toast } from 'react-toastify'
 // Paypal
 import {PayPalButtons, usePayPalScriptReducer} from '@paypal/react-paypal-js'
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 
 const OrderScreen = () => {
     // ใช้ Hook useParams จาก React Router เพื่อดึงค่า parameter ชื่อ id จาก URL.
@@ -29,7 +29,7 @@ const OrderScreen = () => {
     // สร้าง mutation เพื่อทำการชำระเงินสำหรับการสั่งซื้อ.
     const [payOrder, {isLoading: loadingPay}] = usePayOrderMutation();
     const [{isPending}, paypalDispatch] = usePayPalScriptReducer();
-    const {userInfo} = useSelector((state) => state.auth);
+    // const {userInfo} = useSelector((state) => state.auth);
     const {data:paypal, isLoading: loadingPayPal, error:errorPayPal} = useGetPayPalClientIdQuery();
 
     // เป็น Effect ที่ทำงานเมื่อค่า order, paypal, paypalDispatch, loadingPayPal, หรือ errorPayPal เปลี่ยนแปลง.
@@ -66,11 +66,11 @@ const OrderScreen = () => {
         })
     }
 
-    async function onApproveTest() {
-        await payOrder({orderId, details: {payer: {}}});
-        refetch();
-        toast.success('Payment Successful')
-    }
+    // async function onApproveTest() {
+    //     await payOrder({orderId, details: {payer: {}}});
+    //     refetch();
+    //     toast.success('Payment Successful')
+    // }
 
     function onError(err) {
         toast.err(err.message);
@@ -92,7 +92,6 @@ const OrderScreen = () => {
 
     return isLoading ? <Loader/> : error ? <Message variant='danger'/> : (
         <>
-            <h1>{order._id}</h1>
             <Row>
                 <Col md={8}>
                     <ListGroup variant='flush'>

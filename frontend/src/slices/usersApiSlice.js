@@ -1,6 +1,9 @@
 import { USERS_URL } from "../constance";
 import { apiSlice } from "./apiSlice";
 
+// PUT, POST, DELETE = .mutation
+// GET = .query
+
 // ใช้เชื่อม backend กับ frontend โดยการส่ง url ออกไป
 export const userApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
@@ -35,6 +38,16 @@ export const userApiSlice = apiSlice.injectEndpoints({
                 body: data
             }),
         }),
+
+        // Profile
+        profile: builder.mutation({
+            query: (data) => ({
+                url: `${USERS_URL}/profile`,
+                method: 'PUT',
+                body: data
+            })
+        }),
+
     })
 })
 
@@ -43,4 +56,5 @@ export const {
     useLoginMutation,
     useLogoutMutation,
     useRegisterMutation,
+    useProfileMutation,
 } = userApiSlice 
