@@ -20,7 +20,7 @@ const ProfileScreen = () => {
 
     // func from backend
     let [updateProfile, {isLoading: loadingUpdateProfile}] = useProfileMutation();
-    let { data: orders, isLoading, error } = useGetMyOrdersQuery();
+    const { data: orders, isLoading, error } = useGetMyOrdersQuery();
 
 
     const dispatch = useDispatch();

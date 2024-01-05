@@ -42,11 +42,11 @@ const OrderListScreen = () => {
                                     ))}
                                 </td>
                                 <td>{order.user && order.user.name}</td>
-                                <td>{order.createdAt.substring(0,10)}</td>
+                                <td>{order.createdAt.substring(0, 10)}</td>
                                 <td>{order.totalPrice}</td>
                                 <td>
                                     {order.isPaid ? (
-                                        order.paidAt.substring(0,10) //Paid
+                                        order.paidAt.substring(0, 10) //Paid
                                     ) : (
                                         <FaTimes style={{color:'red'}}/>  //Not Paid
                                     )
@@ -54,9 +54,9 @@ const OrderListScreen = () => {
                                 </td>
                                 <td>
                                     {order.isDelivered ? (
-                                        order.deliveredAt.substring(0,10) //Paid
+                                        order.deliveredAt && order.deliveredAt.substring(0, 10) //Delivered
                                     ) : (
-                                        <FaTimes style={{color:'red'}}/>  //Not Paid
+                                        <FaTimes style={{color:'red'}}/>  //Not
                                     )
                                     }
                                 </td>

@@ -5,13 +5,15 @@ import {
     useGetOrderDetailsQuery,
     useGetPayPalClientIdQuery,
     usePayOrderMutation,
+    useDeliveredOrderMutation
 } from '../slices/orderApiSlice.js'
 import { Link, useParams } from 'react-router-dom';
-import { Col, ListGroup, Row, Image, Card } from 'react-bootstrap';
+import { Col, ListGroup, Row, Image, Card, Button } from 'react-bootstrap';
 import { toast } from 'react-toastify'
 // Paypal
 import {PayPalButtons, usePayPalScriptReducer} from '@paypal/react-paypal-js'
-// import { useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+
 
 const OrderScreen = () => {
     // ใช้ Hook useParams จาก React Router เพื่อดึงค่า parameter ชื่อ id จาก URL.
@@ -31,6 +33,11 @@ const OrderScreen = () => {
     const [{isPending}, paypalDispatch] = usePayPalScriptReducer();
     // const {userInfo} = useSelector((state) => state.auth);
     const {data:paypal, isLoading: loadingPayPal, error:errorPayPal} = useGetPayPalClientIdQuery();
+
+    // Check Delivered?
+    const [deliveredOrder, {isLoading: loadingDeliver}] = useDeliveredOrderMutation()
+
+    const {userInfo} = useSelector((state) => state.auth)
 
     // เป็น Effect ที่ทำงานเมื่อค่า order, paypal, paypalDispatch, loadingPayPal, หรือ errorPayPal เปลี่ยนแปลง.
     useEffect(() => {
@@ -89,6 +96,18 @@ const OrderScreen = () => {
         })
     }
 
+    const deliverHandler =async(e)=>{
+        e.preventDefault();
+        try {
+            // เมื่อฟังก์ชันนี้ทำงานหมายถึง จะทำการส่งค่า orderId ส่งไปยัง url: `${ORDERS_URL}/${orderId}/deliver
+            // ซึ่งจะเรียกใช้ updateOrderToDelivered โดยหากมี orderId delivered = true ตามที่กำหนด
+            await deliveredOrder(orderId);
+            refetch();
+            toast.success('Delivered Success')
+        } catch (err) {
+            toast.error(err?.data?.message || err.message)
+        }
+    }
 
     return isLoading ? <Loader/> : error ? <Message variant='danger'/> : (
         <>
@@ -118,7 +137,7 @@ const OrderScreen = () => {
                             {/* Delivery Status */}
                             { order.isDelivered ? (
                                 <Message variant='success'>
-                                    จัดส่งแล้ว
+                                    จัดส่งแล้ว 
                                 </Message>
                             ) : (
                                 <Message variant='danger'>
@@ -173,7 +192,7 @@ const OrderScreen = () => {
                 </Col>
 
                 {/* Conclusion */}
-                <Col md={4}>
+                <Col md={3}>
                     <Card>
                         {/* data from mongoDB by(orderModel.js) */}
                         <ListGroup variant='flush'>
@@ -183,7 +202,7 @@ const OrderScreen = () => {
                                 <h2>ยอดรวม</h2>
                             </ListGroup.Item>
                             <ListGroup.Item>
-                                <Row>
+                                <Row >
                                     <Col>ราคาสินค้า</Col>
                                     <Col>{order.itemsPrice} บาท</Col>
                                 </Row>
@@ -221,7 +240,14 @@ const OrderScreen = () => {
 
                             )}
                             {/* Mark As Delivered PlaceOrder */}
-
+                            {loadingDeliver && <Loader/>}
+                                {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+                                        <ListGroup.Item>
+                                            <Button type='button' className='btn btn-green' variant='light' style={{width: '100%'}} onClick={deliverHandler}>
+                                                จัดส่งสำเร็จ
+                                            </Button>
+                                        </ListGroup.Item>
+                                    )}
                         </ListGroup>
                     </Card>
                 </Col>
