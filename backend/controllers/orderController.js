@@ -75,6 +75,29 @@ const getOrderByID = asyncHandler(async(req,res)=>{
         res.status(404);
         throw new Error('Order not found')
     }
+
+    // ถ้าคุณไม่ได้เขียน populate('user','name email') ในคำสั่ง Order.findById(req.params.id) 
+    // จะทำให้ไม่มีการดึงข้อมูลผู้ใช้ (user) มาในข้อมูล Order ที่ได้รับคืนจาก MongoDB ดังนั้น, ข้อมูล user 
+    // ใน Object order จะเป็น ObjectId ของผู้ใช้ที่ทำการสั่งซื้อ (order) นั้น ๆ แทนที่จะเป็น Object ของผู้ใช้ทั้งหมด.
+    // ดังนั้น, ถ้าคุณไม่ได้เขียน populate('user','name email'), คุณจะได้ order ที่มีข้อมูล user เป็น ObjectId 
+    // เท่านั้น และถ้าคุณต้องการข้อมูลเพิ่มเติมของผู้ใช้ (user) คุณจะต้องดึงข้อมูลผู้ใช้เพิ่มเติมโดยใช้คำสั่ง populate 
+    // หรือดึงข้อมูลผู้ใช้แยกต่างหาก.
+    
+
+    // ในส่วนนี้ใช้ Order.find({}) เพื่อดึงข้อมูล order ทั้งหมดจาก MongoDB
+    // const orders = await Order.find({}).populate('user', 'id name');
+
+    // ปรับข้อมูลใน orders โดยให้ map ผ่านทุกรายการ order และแปลงข้อมูลใน orderItems
+    // const ordersWithProductNames = orders.map(order => ({
+    //     ...order.toObject(),
+    //     orderItems: order.orderItems.map(orderItem => ({
+    //         ...orderItem.toObject(),
+    //         name: orderItem.name,  // เพิ่ม name ของสินค้าเข้าไป
+    //     }))
+    // }));
+
+    // ส่ง response กลับไปที่ client โดยกำหนดสถานะการทำงานของ HTTP เป็น 200 OK และส่งข้อมูล order ทั้งหมดในรูปแบบ JSON
+    res.status(200).json(ordersWithProductNames);
 });
 
 // @desc    Update order to paid
@@ -112,7 +135,9 @@ const updateOrderToDelivered = asyncHandler(async(req,res)=>{
 // @route   Get /api/orders
 // @access  Private/Admin
 const getOrders = asyncHandler(async(req,res)=>{
-    res.send("get all orders")
+    // ในส่วนนี้ใช้ Order.find({}) เพื่อดึงข้อมูล order ทั้งหมดจาก MongoDB
+    const order = await Order.find({}).populate('user', 'id name');
+    res.status(200).json(order)
 })
 
 export {

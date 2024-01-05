@@ -116,7 +116,7 @@ const ProfileScreen = () => {
                 <Table>
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>รายการสินค้า</th>
                             <th>DATE</th>
                             <th>TOTAL</th>
                             <th>PAID</th>
@@ -127,7 +127,14 @@ const ProfileScreen = () => {
                     <tbody>
                     {orders && orders.map((order) => (
                         <tr key={order._id}>
-                            <td>{order._id}</td>
+                            <td>
+                            {/* เอา name ที่ */}
+                            {order.orderItems.map((orderItem) => (
+                                        <tr key={orderItem._id}>
+                                            <td>{orderItem.name}</td>
+                                        </tr>
+                                    ))}
+                            </td>
 
                             {/* substring = เป็นวันที่ในรูปแบบ "YYYY-MM-DD". */}
                             <td>{order.createdAt.substring(0, 10)}</td>

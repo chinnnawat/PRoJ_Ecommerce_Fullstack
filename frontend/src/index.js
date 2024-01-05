@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom/client';
 // Route
 import App from './App';
 import PrivateRoute from './component/PrivateRoute';
+import AdminRoute from './component/AdminRoute'
 
 import reportWebVitals from './reportWebVitals';
 // import 'bootstrap/dist/css/bootstrap.min.css';
@@ -25,11 +26,16 @@ import CartScreen from './screens/CartScreen';
 import AllProduct from './screens/AllProduct';
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen'
+
+// Private Screen
 import ShippingScreen from './screens/ShippingScreen';
 import PaymentScreen from './screens/PaymentScreen';
 import PlaceOrderScreen from './screens/PlaceOrderScreen';
 import OrderScreen from './screens/OrderScreen';
 import ProfileScreen from './screens/ProfileScreen';
+
+// Admin Screen
+import OrderListScreen from './screens/admin/OrderListScreen';
 
 import { Provider } from 'react-redux';
 import store from './store';
@@ -46,12 +52,18 @@ const router = createBrowserRouter(
       <Route path='/login' element={<LoginScreen/>}/>
       <Route path='/register' element={<RegisterScreen/>}/>
 
+      {/* Private Route */}
       <Route path='' element={<PrivateRoute/>}>
         <Route path='/shipping' element={<ShippingScreen/>}/>
         <Route path='/payment' element={<PaymentScreen/>}/>
         <Route path='/placeorder' element={<PlaceOrderScreen/>}/>
         <Route path='/order/:id' element={<OrderScreen/>}/>
         <Route path='/profile' element={<ProfileScreen/>}/>
+      </Route>
+
+      {/* Admin Route */}
+      <Route path='' element={<AdminRoute/>}>
+        <Route path='/admin/orderlist' element={<OrderListScreen/>}/>
       </Route>
 
       {/* My Self */}
