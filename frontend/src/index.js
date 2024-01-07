@@ -36,6 +36,8 @@ import ProfileScreen from './screens/ProfileScreen';
 
 // Admin Screen
 import OrderListScreen from './screens/admin/OrderListScreen';
+import ProductListScreen from './screens/admin/ProductListScreen';
+import ProductEditScreen from './screens/admin/ProductEditScreen';
 
 import { Provider } from 'react-redux';
 import store from './store';
@@ -64,6 +66,8 @@ const router = createBrowserRouter(
       {/* Admin Route */}
       <Route path='' element={<AdminRoute/>}>
         <Route path='/admin/orderlist' element={<OrderListScreen/>}/>
+        <Route path='/admin/productlist' element={<ProductListScreen/>}/>
+        <Route path='/admin/product/:id/edit' element={<ProductEditScreen/>}/>
       </Route>
 
       {/* My Self */}

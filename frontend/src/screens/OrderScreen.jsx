@@ -137,7 +137,14 @@ const OrderScreen = () => {
                             {/* Delivery Status */}
                             { order.isDelivered ? (
                                 <Message variant='success'>
-                                    จัดส่งแล้ว 
+                                    จัดส่งแล้ว {new Date(order.deliveredAt).toLocaleString('en-US', {
+                                        year: 'numeric',
+                                        month: '2-digit',
+                                        day: '2-digit',
+                                        hour: '2-digit',
+                                        minute: '2-digit',
+                                        second: '2-digit',
+                                    })}
                                 </Message>
                             ) : (
                                 <Message variant='danger'>
@@ -153,7 +160,14 @@ const OrderScreen = () => {
                             <p>วิธีการชำระสินค้า : {order.paymentMethod}</p>
                             { order.isPaid ? (
                                 <Message variant='success'>
-                                    ชำระสินค้าแล้ว {order.paidAt}
+                                    ชำระสินค้าแล้ว {new Date(order.paidAt).toLocaleString('en-US', {
+                                        year: 'numeric',
+                                        month: '2-digit',
+                                        day: '2-digit',
+                                        hour: '2-digit',
+                                        minute: '2-digit',
+                                        second: '2-digit',
+                                    })}
                                 </Message>
                             ) : (
                                 <Message variant='danger'>

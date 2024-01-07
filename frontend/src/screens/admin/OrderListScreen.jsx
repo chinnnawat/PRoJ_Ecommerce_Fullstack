@@ -23,10 +23,10 @@ const OrderListScreen = () => {
                             <th>ID</th>
                             <th>PRODUCT</th>
                             <th>USER</th>
-                            <th>DATE</th>
+                            <th>DATE(MM-DD-YYYY)</th>
                             <th>TOTAL</th>
-                            <th>PAID</th>
-                            <th>DELIVERED</th>
+                            <th>PAID(MM-DD-YYYY)</th>
+                            <th>DELIVERED(MM-DD-YYYY)</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -42,11 +42,19 @@ const OrderListScreen = () => {
                                     ))}
                                 </td>
                                 <td>{order.user && order.user.name}</td>
-                                <td>{order.createdAt.substring(0, 10)}</td>
+                                <td>{new Date(order.createdAt).toLocaleString('en-US', {
+                                        year: 'numeric',
+                                        month: '2-digit',
+                                        day: '2-digit',
+                                    })}</td>
                                 <td>{order.totalPrice}</td>
                                 <td>
                                     {order.isPaid ? (
-                                        order.paidAt.substring(0, 10) //Paid
+                                        new Date(order.paidAt).toLocaleString('en-US', {
+                                            year: 'numeric',
+                                            month: '2-digit',
+                                            day: '2-digit',
+                                        }) //Paid
                                     ) : (
                                         <FaTimes style={{color:'red'}}/>  //Not Paid
                                     )
@@ -54,7 +62,11 @@ const OrderListScreen = () => {
                                 </td>
                                 <td>
                                     {order.isDelivered ? (
-                                        order.deliveredAt && order.deliveredAt.substring(0, 10) //Delivered
+                                        order.deliveredAt && new Date(order.deliveredAt).toLocaleString('en-US', {
+                                            year: 'numeric',
+                                            month: '2-digit',
+                                            day: '2-digit',
+                                        }) //Delivered
                                     ) : (
                                         <FaTimes style={{color:'red'}}/>  //Not
                                     )

@@ -7,6 +7,8 @@ import Product from '../models/productModel.js'
 // @desc    Fetch all aproducts
 // @route   GET /api/products
 // @access  Public
+
+// Get All Products
 const getProducts = asyncHandler(async(req,res) => {
 
     // 1. Product คือ Mongoose Model ที่เกี่ยวข้องกับ collection ใน MongoDB ที่เก็บข้อมูลสินค้า
@@ -36,7 +38,51 @@ const getProductsById = asyncHandler(async(req,res) => {
     }
 })
 
+// @desc    Create a product
+// @route   POST /api/products
+// @access  Private/Admin
+const createProduct = asyncHandler(async(req,res) => {
+    const product = new Product({
+        user: req.user._id,
+        name: 'Sample Product',
+        image: '/images/jujutsu.jpg',
+        category: 'Sample Category',
+        description: 'Sample Description',
+        rating: 0,
+        price: 0,
+        numReviews: 0,
+        countInStock: 0,
+    });
+    const createdProduct = await product.save();
+    res.status(201).json(createdProduct);
+})
+
+// @desc    Update a Product
+// @route   PUT /api/products/:id
+// @access  Privare/Admin
+const updateProduct = asyncHandler(async(req,res) => {
+    const { name, image, category, description, price, countInStock } = req.body;
+    const product = await Product.findById(req.params.id)
+
+    if (product){
+        product.name = name;
+        product.image = image;
+        product.category = category;
+        product.description = description;
+        product.price = price;
+        product.countInStock = countInStock;
+
+        const updatedProduct = await product.save();
+        res.json(updatedProduct)
+    } else {
+        res.status(404);
+        throw new Error('Resource not Found')
+    }
+})
+
 export{
     getProducts,
-    getProductsById
+    getProductsById,
+    createProduct,
+    updateProduct
 }

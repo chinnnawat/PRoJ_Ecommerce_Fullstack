@@ -117,10 +117,10 @@ const ProfileScreen = () => {
                     <thead>
                         <tr>
                             <th>รายการสินค้า</th>
-                            <th>DATE</th>
+                            <th>DATE(MM-DD-YYYY)</th>
                             <th>TOTAL</th>
-                            <th>PAID</th>
-                            <th>DELIVERY</th>
+                            <th>PAID(MM-DD-YYYY)</th>
+                            <th>DELIVERY(MM-DD-YYYY)</th>
                             <th>STATUS</th>
                         </tr>
                     </thead>
@@ -137,18 +137,30 @@ const ProfileScreen = () => {
                             </td>
 
                             {/* substring = เป็นวันที่ในรูปแบบ "YYYY-MM-DD". */}
-                            <td>{order.createdAt.substring(0, 10)}</td>
+                            <td>{new Date(order.createdAt).toLocaleString('en-US', {
+                                        year: 'numeric',
+                                        month: '2-digit',
+                                        day: '2-digit',
+                                    })}</td>
                             <td>{order.totalPrice} บาท</td>
                             <td>
                                 {order.isPaid ? (
-                                    order.paidAt.substring(0, 10)
+                                    new Date(order.paidAt).toLocaleString('en-US', {
+                                        year: 'numeric',
+                                        month: '2-digit',
+                                        day: '2-digit',
+                                    })
                                 ) : (
                                     <FaTimes style={{color: 'red'}}/>
                                 )}
                             </td>
                             <td>
                                 {order.isDelivered ? (
-                                    order.deliveredAt.substring(0,10)
+                                    new Date(order.deliveredAt).toLocaleString('en-US', {
+                                        year: 'numeric',
+                                        month: '2-digit',
+                                        day: '2-digit',
+                                    })
                                 ) : (
                                     <FaTimes style={{color:'red'}}/>
                                 )}
