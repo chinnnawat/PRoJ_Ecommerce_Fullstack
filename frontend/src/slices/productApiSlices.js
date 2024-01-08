@@ -1,7 +1,7 @@
 // ****** ใช้ Redux Toolkit Query เพื่อสร้าง endpoints *********
 // ****** ใช้วิธีนี้แทนการ fetch แบบ axios  **************
 
-import {PRODUCTS_URL} from '../../src/constance.js'
+import {PRODUCTS_URL, UPLOAD_URL} from '../../src/constance.js'
 import {apiSlice} from '../slices/apiSlice.js'
 
 // 1. Endpoint คือ URL ที่สำหรับการเรียกใช้บริการ
@@ -26,8 +26,10 @@ export const productsApiSlice = apiSlice.injectEndpoints({
             query:() => ({
                 url: PRODUCTS_URL,
             }),
+            // providesTags จะมีการใช้งานเมื่อข้อมูลเก่ามีการเปลี่ยนแปลงไป
             providesTags: ['Product'],
-            keepUnusedDataFor:5 //min
+            // กำหนดเวลาที่ข้อมูลที่ไม่ได้ใช้งาน (unused data) จะถูกเก็บไว้ในแคช โดยระบุเป็นนาที (ในที่นี้คือ 5 นาที). หากข้อมูลไม่ได้ถูกใช้งานภายในระยะเวลาที่กำหนด, React Query จะทำการลบข้อมูลนั้นออกจากแคชเพื่อประหยัดทรัพยากร
+            keepUnusedDataFor:5 //sec
         }),
         
         // page productScreen
@@ -36,7 +38,7 @@ export const productsApiSlice = apiSlice.injectEndpoints({
             query:(productId) => ({
                 url: `${PRODUCTS_URL}/${productId}`
             }),
-            keepUnusedDataFor:5 //min
+            keepUnusedDataFor:5 //sec
         }),
 
         // Create New Product
@@ -56,6 +58,15 @@ export const productsApiSlice = apiSlice.injectEndpoints({
                 body: data
             }),
             invalidatesTags: ['Product'],
+        }),
+
+        // Image
+        uploadProductImage: builder.mutation({
+            query: (data) => ({
+                url: `${UPLOAD_URL}`,
+                method: 'POST',
+                body: data,
+            })
         })
     })
 });
@@ -64,5 +75,6 @@ export const {
     useGetProductsQuery,
     useGetProductDetailsQuery,
     useCreateProductMutation,
-    useUpdateProductMutation
+    useUpdateProductMutation,
+    useUploadProductImageMutation
 } = productsApiSlice

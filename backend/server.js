@@ -21,11 +21,13 @@
 import express from "express";
 import dotenv from  'dotenv'
 import connectDB from './config/db.js'
+import path from 'path'
 
-// อ่านข้อมูลจาก MongoDB และนำมาใช้งาน
+// อ่านข้อมูลจาก MongoDB และนำมาใช้งาน (Router)
 import productRoute from './routes/productRoute.js';
 import userRoutes from './routes/userRoutes.js';
-import orderRoute from './routes/orderRoute.js'
+import orderRoute from './routes/orderRoute.js';
+import uploadImageRoute from './routes/uploadImageRoute.js'
 //
 import {notFound,errorHandler} from './middleware/errorMiddleware.js'
 
@@ -59,9 +61,14 @@ app.get('/', (req,res) => {
 app.use('/api/products', productRoute);
 app.use('/api/users', userRoutes);
 app.use('/api/orders', orderRoute);
+app.use('/api/upload', uploadImageRoute);
 
 // Paypal
 app.get('/api/config/paypal', (req,res) => res.send({clientId: process.env.PAYPAL_CLIENT_ID}));
+
+// UploadImage
+const __dirname = path.resolve(); // set __dirname to current directory
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
 
 // ************************* ย้ายส่วนนี้ไปที่ productRoute.js ****************************** //
 

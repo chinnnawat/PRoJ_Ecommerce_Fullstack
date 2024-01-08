@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { 
     useGetProductDetailsQuery,
-    useUpdateProductMutation
+    useUpdateProductMutation,
+    useUploadProductImageMutation
 } from '../../slices/productApiSlices.js';
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify';
@@ -28,6 +29,7 @@ const ProductEditScreen = () => {
     } = useGetProductDetailsQuery(productId);
 
     const [updateProduct, { isLoading: loadingUpdate }] = useUpdateProductMutation();
+    const [uploadProductImage, { isLoading: loadingUpload }] = useUploadProductImageMutation();
 
     const navigate = useNavigate();
 
@@ -66,6 +68,25 @@ const ProductEditScreen = () => {
         }
     }
 
+    const uploadfileHandler =async(e) => {
+        e.preventDefault();
+
+        //  สร้างอ็อบเจ็กต์ FormData ซึ่งเป็นวิธีที่ดีที่สุดในการสร้างแบบฟอร์มเพื่อใช้ในการอัปโหลดไฟล์ผ่าน AJAX
+        const formData = new FormData();
+
+        // การเลือก e.target.files[0] หมายถึงการเลือกไฟล์แรกในคอลเล็กชันนั้น ๆ (index 0)
+        formData.append("image", e.target.files[0]);
+
+        try {
+            // unwrap() เป็น redux-toolkit ใช้จัดการ error ใน trycatch ได้ง่ายขึ้น
+            const res = await uploadProductImage(formData).unwrap();
+            toast.success('upload image success')
+            setImage(res.image)
+        } catch (err) {
+            toast.error(err?.data?.message || err.error)
+        }
+    }
+
 
     return (
         <>
@@ -89,6 +110,20 @@ const ProductEditScreen = () => {
                         </Form.Group>
 
                         {/* Image Input PlaceHolder */}
+                        <Form.Group controlId='image'className='my-2'>
+                            <Form.Label>Image</Form.Label>
+                            <Form.Control
+                                type='text'
+                                placeholder='Image url'
+                                // value={image}
+                                onChange={(e) => setImage(e.target.value)}
+                            ></Form.Control>
+                            <Form.Control
+                                type='file'
+                                placeholder='choose your image file'
+                                onChange={uploadfileHandler}
+                            ></Form.Control>
+                        </Form.Group>
                         
                         {/* category */}
                         <Form.Group controlId='category'className='my-2'>
