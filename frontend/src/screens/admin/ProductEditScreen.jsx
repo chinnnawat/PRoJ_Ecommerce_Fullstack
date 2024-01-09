@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 import FormContainer from '../../component/FormContainer.jsx'
 import Loader from '../../component/Loader.jsx';
 import Message from '../../component/Message.jsx';
-import { Button, Form, FormLabel } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 
 const ProductEditScreen = () => {
     const {id: productId} = useParams();
@@ -25,7 +25,6 @@ const ProductEditScreen = () => {
         data: product,
         isLoading,
         error,
-        refetch
     } = useGetProductDetailsQuery(productId);
 
     const [updateProduct, { isLoading: loadingUpdate }] = useUpdateProductMutation();
@@ -97,7 +96,8 @@ const ProductEditScreen = () => {
             </Link>
             <FormContainer>
                 <h1>Edit Product</h1>
-
+                {loadingUpdate && <Loader/>}
+                {loadingUpload && <Loader/>}
                 {isLoading ? <Loader/> : error ? <Message>{error}</Message> : (
                     <Form onSubmit={submitHandler}>
                         {/* Product Name */}

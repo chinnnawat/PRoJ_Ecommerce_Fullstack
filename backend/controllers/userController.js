@@ -148,7 +148,7 @@ const getUsers = asyncHandler(async(req, res) => {
 const getUserByID = asyncHandler(async(req, res) => {
 
     // .select('-password') จะดึงข้อมูลผู้ใช้ทั้งหมดยกเว้นฟิลด์ password
-    const user = await User.findById(req.params.id).select(-password)
+    const user = await User.findById(req.params.id).select('-password')
     if (user){
         res.status(200).json(user)
     } else {
