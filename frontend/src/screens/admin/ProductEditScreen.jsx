@@ -80,7 +80,9 @@ const ProductEditScreen = () => {
         try {
             // unwrap() เป็น redux-toolkit ใช้จัดการ error ใน trycatch ได้ง่ายขึ้น
             const res = await uploadProductImage(formData).unwrap();
-            toast.success('upload image success')
+            toast.success('upload image success',{
+                autoClose: 1000,
+            })
             setImage(res.image)
         } catch (err) {
             toast.error(err?.data?.message || err.error)

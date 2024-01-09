@@ -7,17 +7,32 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { toast } from 'react-toastify'
 
 // Slice
-import { useGetProductsQuery, useCreateProductMutation } from '../../slices/productApiSlices'
+import { 
+    useGetProductsQuery, 
+    useCreateProductMutation,
+    useDeleteProductMutation,
+} from '../../slices/productApiSlices'
 
 
 const ProductListScreen = () => {
     const {data: products, isLoading, error, refetch} = useGetProductsQuery()
-    const [createProduct, {isLoading: loadingCreate}] = useCreateProductMutation()
+    const [createProduct, {isLoading: loadingCreate}] = useCreateProductMutation();
+    const [deleteProduct, { isLoading: loadingDelete }] = useDeleteProductMutation();
     console.log(products)
 
-// BTN
-const deleteHandler =(id) => {
-    console.log("Delete", id)
+// Handler
+const deleteHandler =async(id) => {
+    if(window.confirm("Are you sure ?")){
+        try {
+            await deleteProduct(id);
+            toast.success('Product Deleted', {
+                autoClose: 1000,
+            })
+            refetch();
+        } catch (err) {
+            toast.error( err?.data?.message || err.error );
+        }
+    }
 }
 
 const createProductHandler =async() => {
@@ -30,6 +45,7 @@ const createProductHandler =async() => {
         }
     }
 }
+
     return( 
     <>
         <Row className='align-items-center'>
@@ -44,6 +60,7 @@ const createProductHandler =async() => {
         </Row>
 
         {loadingCreate && <Loader/>}
+        {loadingDelete && <Loader/>}
         {isLoading ? <Loader/> : error ? <Message>{error}</Message> :(
             <>
                 <Table striped hover responsive className='table-sm'>
@@ -59,7 +76,12 @@ const createProductHandler =async() => {
                         {products.map((product) => (
                             <tr key={product._id}>
                                 <td>{product._id}</td>
-                                <td>{product.name}</td>
+                                <td>
+                                    {/* ใช้ LinkContainer ล้อมรอบช่องที่คุณต้องการทำให้เป็นลิ้งค์ */}
+                                    <LinkContainer to={`/products/${product._id}`}>
+                                        <span className="text-decoration-none">{product.name}</span>
+                                    </LinkContainer>
+                                </td>
                                 <td>{product.price}</td>
                                 <td>{product.category}</td>
                                 <td>
