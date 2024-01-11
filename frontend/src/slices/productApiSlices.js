@@ -14,6 +14,12 @@ import {apiSlice} from '../slices/apiSlice.js'
 // ในทุก Endpoint, คำข้างต้นคือ URI (Uniform Resourc
 
 // 2. เป็น method ที่ให้โปรแกรมสร้าง endpoints ใน Redux Toolkit Query.
+
+
+// 3. providesTags ไว้ add แคช ให้ไม่ต้องไปดึงข้อมูลจาก server บ่อยๆ เอาข้อมูลเก็บไว้ใน แคชและใช้งาน
+//  invalidatesTags ไว้ ลบ และอัพเดทแคชนั้นใหม่ เมื่อต้องการเปลี่ยนแปลง หรือ อัพเดทข้อมูล
+
+
 export const productsApiSlice = apiSlice.injectEndpoints({
 
     // Function endpoint มี builder เป็น parameter
@@ -75,6 +81,16 @@ export const productsApiSlice = apiSlice.injectEndpoints({
                 url: `${PRODUCTS_URL}/${productId}`,
                 method: 'DELETE',
             })
+        }),
+
+        // comment
+        createReview: builder.mutation({
+            query: (data) => ({
+                url: `${PRODUCTS_URL}/${data.productId}/reviews`,
+                method: 'POST',
+                body: data
+            }),
+            invalidatesTags: ['Product'],
         })
     })
 });
@@ -86,4 +102,5 @@ export const {
     useUpdateProductMutation,
     useUploadProductImageMutation,
     useDeleteProductMutation,
+    useCreateReviewMutation,
 } = productsApiSlice

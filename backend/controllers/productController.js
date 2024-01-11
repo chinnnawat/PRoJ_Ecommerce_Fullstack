@@ -95,10 +95,62 @@ const deleteProduct = asyncHandler(async(req,res) => {
     }
 })
 
+// @desc    Create a new review
+// @route   POST /api/products/:id/reviews
+// @access  Privare/Admin
+const creatProductReview = asyncHandler(async(req,res)=>{
+    const product = await Product.findById(req.params.id)
+    const {rating, comment} = req.body
+
+    if(product){
+        // การเปรียบเทียบ review.user.toString() กับ req.user._id.toString() 
+        // ซึ่งเป็นการเปรียบเทียบ string ของรหัสผู้ใช้ที่ลงความคิดเห็นกับรหัสผู้ใช้ที่เข้ามาใหม่
+        // review.user.toString(): รหัสผู้ใช้ของผู้ลงความคิดเห็นที่เก็บไว้ในฐานข้อมูล (เป็น ObjectId)
+        // req.user._id.toString(): รหัสผู้ใช้ของผู้ใช้ที่เข้ามาใหม่  
+        const alreadyReviewed = product.reviews.find((review) => review.user.toString()=== req.user._id.toString());
+
+        if(alreadyReviewed){
+            res.status(400);
+            throw new Error('Reviewed');
+        } else {
+            const review = {
+                name: req.user.name,
+                rating: Number(rating),
+
+                // comment ถูกให้ค่าจาก req.body ด้านบน
+                // ดังนั้น, ถ้าไม่มีค่า comment ที่ถูกส่งมาจาก req.body.comment, ค่า comment ใน review object 
+                // นั้นจะเป็น undefined. แต่ถ้ามีค่า comment มีค่าจริง, ค่านั้นจะถูกกำหนดใน review object.
+                comment,
+                user: req.user._id,
+            };
+
+            // review object ถูกเพิ่มลงใน product.reviews array:
+            product.reviews.push(review);
+
+            // product.reviews.length => จำนวน ข้อมูล array ที่เก็บข้อมูลของการรีวิว เอาไว้ => จำนวนคนที่ทำการรีวิวนั่นเอง
+            product.numReviews = product.reviews.length;
+
+            // reduce ใช้เพื่อ เก็บค่าผลรวมของคะแนน (rating) ทุกรีวิวใน product.review
+            // acc คือค่าผลรวมที่ถูกสะสมและ review คือแต่ละรีวิวใน product.review
+            //  ค่าเริ่มต้น (0) จะถูกให้กับ acc.
+            product.rating = product.reviews.reduce((acc, review)=> acc+review.rating,0)/product.numReviews ;
+
+            await product.save();
+            res.status(201).json({message: 'Review added'})
+
+
+        }
+    } else {
+        res.status(404);
+        throw new Error("NO Resource")
+    }
+})
+
 export{
     getProducts,
     getProductsById,
     createProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    creatProductReview,
 }

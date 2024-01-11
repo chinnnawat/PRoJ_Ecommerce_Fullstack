@@ -33,6 +33,12 @@ const UserForEditScreen = () => {
     },[user]);
 
     // Handler
+    // เมื่อผู้ใช้กดปุ่ม Submit ในฟอร์ม, submitHandler จะถูกเรียก.
+    // submitHandler จะเรียกใช้ updateUser ซึ่งเป็นฟังก์ชันที่สร้างจาก useUpdateUserMutation.
+    // updateUser จะส่ง request ไปยัง API server โดยใช้ await updateUser({ userId, name, email, isAdmin }).
+    // เมื่อ request สำเร็จ, toast.success จะแสดงข้อความบอกว่าการอัปเดตผู้ใช้เสร็จสมบูรณ์.
+    // refetch จะดึงข้อมูลผู้ใช้ใหม่จาก API server.
+    // navigate จะนำทางผู้ใช้ไปยังหน้า /admin/userlist เพื่อดูรายการผู้ใช้ทั้งหมด.
     const submitHandler = async(e) => {
         e.preventDefault();
         try {
