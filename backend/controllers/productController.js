@@ -10,14 +10,26 @@ import Product from '../models/productModel.js'
 
 // Get All Products
 const getProducts = asyncHandler(async(req,res) => {
+    // pageSize
+    const pageSize = 11;
+    const page = Number(req.query.pageNumber) || 1;
+
+    // search
+    const keyword = req.query.keyword 
+    ? {name: {$regex: req.query.keyword, $options: 'i'}} 
+    : {} ;
+    const count = await Product.countDocuments({...keyword})
+
 
     // 1. Product คือ Mongoose Model ที่เกี่ยวข้องกับ collection ใน MongoDB ที่เก็บข้อมูลสินค้า
     // 2. .find({}) คือ query method ของ Mongoose ที่ใช้ในการค้นหาข้อมูลทั้งหมดใน collection นั้น ๆ 
     // โดยในที่นี้คือ collection ที่เกี่ยวข้องกับ Model Product.
     // 3. การใช้ {} ในที่นี้คือแบบว่า "ไม่มีเงื่อนไข" หรือ "ค้นหาทั้งหมด" 
     // ซึ่งจะคืนข้อมูลทั้งหมดที่มีใน collection นั้น ๆ.
-    const products = await Product.find({})
-    res.json(products)
+    const products = await Product.find({...keyword})
+    .limit(pageSize)
+    .skip(pageSize * (page-1))
+    res.json({products, page, pages: Math.ceil(count/pageSize)})
 })
 
 // @desc    Fetch a aproduct
@@ -137,13 +149,19 @@ const creatProductReview = asyncHandler(async(req,res)=>{
 
             await product.save();
             res.status(201).json({message: 'Review added'})
-
-
         }
     } else {
         res.status(404);
         throw new Error("NO Resource")
     }
+})
+
+// @desc    Get top rated product
+// @route   GET /api/products/top
+// @access  Public
+const getTopProducts = asyncHandler(async(req,res)=>{
+    const products = await Product.find({}).sort({rating: -1}).limit(8);
+    res.status(200).json(products)
 })
 
 export{
@@ -153,4 +171,5 @@ export{
     updateProduct,
     deleteProduct,
     creatProductReview,
+    getTopProducts
 }

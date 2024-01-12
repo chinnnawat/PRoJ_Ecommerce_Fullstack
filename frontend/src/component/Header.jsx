@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLogoutMutation } from '../slices/usersApiSlice';
 import { logout } from '../slices/authSlice';
 import { useNavigate } from 'react-router-dom';
+import SearchBox from './SearchBox';
 
 
 const Header = () => {
@@ -41,8 +42,14 @@ const Header = () => {
                             <Image src={logo} alt='Logo Phithong' fluid style={{ width: '100px', height: '100px' }}/>
                         </Navbar.Brand>
                     </LinkContainer>
+                    {/* search */}
+                    <SearchBox/>
+                    
                     <Navbar.Toggle aria-controls='basic-navbar-nav'/>
                     <Navbar.Collapse id='basic-navbar-nav'>
+                        
+
+                        {/* NaveBar Nenu */}
                         <Nav className='ms-auto'>
                             <LinkContainer to='/promotion'>
                                 <Nav.Link>

@@ -44,4 +44,48 @@ $secondary: red;
     border: solid 1px #B1B1B1;
 }
 
+// Star
+.rating svg{
+    color: #f8e825;
+}
+.rating-text{
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding-left: 0.5rem;
+}
 
+// table
+table td,
+    table th {
+        text-align: center;
+    }
+
+// carousel
+.carousel-caption{
+    position: absolute;
+    width: 100%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+}
+
+.carousel-image-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 500;
+}
+
+.carousel-image {
+    width: 100%;
+    max-width: 400px; /* ปรับขนาดตามความเหมาะสม */
+    max-height: 100%;
+}
+
+// bg
+.class-Carousel{
+    border-radius: 15px;
+    border: solid 0.5px #B1B1B1;
+    background: #cfcbcb;
+}

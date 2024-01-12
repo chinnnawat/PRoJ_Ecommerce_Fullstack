@@ -29,8 +29,12 @@ export const productsApiSlice = apiSlice.injectEndpoints({
         // 1. ใช้ในหน้า HomeScreen
         getProducts: builder.query({
             // query = การระบุพารามิเตอร์เพื่อส่งข้อมูลไปยัง server
-            query:() => ({
+            query:({pageNumber,keyword}) => ({
                 url: PRODUCTS_URL,
+                params: {
+                    pageNumber,
+                    keyword,
+                }
             }),
             // providesTags จะมีการใช้งานเมื่อข้อมูลเก่ามีการเปลี่ยนแปลงไป
             providesTags: ['Product'],
@@ -91,6 +95,14 @@ export const productsApiSlice = apiSlice.injectEndpoints({
                 body: data
             }),
             invalidatesTags: ['Product'],
+        }),
+
+        // Slide Product For สวยงาม
+        getTopProduct: builder.query({
+            query: () => ({
+                url: `${PRODUCTS_URL}/top`,
+            }),
+            keepUnusedDataFor: 5,
         })
     })
 });
@@ -103,4 +115,5 @@ export const {
     useUploadProductImageMutation,
     useDeleteProductMutation,
     useCreateReviewMutation,
+    useGetTopProductQuery,
 } = productsApiSlice

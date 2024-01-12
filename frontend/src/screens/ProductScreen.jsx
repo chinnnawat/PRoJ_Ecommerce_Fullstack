@@ -187,13 +187,18 @@ const ProductScreen = () => {
                     <Row className='review'>
                         {product.reviews.length === 0 && <Message>No review</Message>}
                         <ListGroup variant='flush'>
+                            <ListGroup.Item>
+                                <h2>ความคิดเห็น</h2>
+                            </ListGroup.Item>
                             {product.reviews.map((review) => (
-                                <ListGroup.Item key={review._id}>
-                                    <strong>{review.name}</strong>
-                                    <Rating value={review.rating}/>
-                                    <p>{review.createAt && review.createAt.substring(0, 10)}</p>
-                                    <p>{review.comment}</p>
-                                </ListGroup.Item>
+                                <>
+                                    <ListGroup.Item key={review._id}>
+                                        <strong>{review.name}</strong>
+                                        <Rating value={review.rating}/>
+                                        <p>{review.createAt && review.createAt.substring(0, 10)}</p>
+                                        <p>{review.comment}</p>
+                                    </ListGroup.Item>
+                                </>
                             ))}
                                 <ListGroup.Item>
                                     <h2>Write a customer</h2>
@@ -204,7 +209,7 @@ const ProductScreen = () => {
                                 {/* use Redux */}
                                 {userInfo ? (
                                     <Form onSubmit={submitHandler}>
-                                        {/* Rating */}
+                                        {/* Rating Show */}
                                         <Form.Group className='my-2' controlId='rating'>
                                             <Form.Label>Rating</Form.Label>
                                             <Form.Control
