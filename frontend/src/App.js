@@ -4,6 +4,7 @@ import { Container } from 'react-bootstrap'
 import Footer from './component/Footer'
 import { Outlet } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
+// import FloatingActionButton from './component/FloatingAction'
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
       </main>
       <Footer/>
       <ToastContainer/>
+      {/* <FloatingActionButton/> */}
     </>
   )
 }

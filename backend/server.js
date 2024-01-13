@@ -52,10 +52,7 @@ app.use(express.urlencoded({extended: true}))
 // Cookie Parser Middleware
 app.use(cookieParser());
 
-// เมื่อได้รับ url '/' จะอ่านข้อมูล และจะทำการแสดง(respond) ข้อความ Api is Running... บน port 5000
-app.get('/', (req,res) => {
-    res.send('Api is Running...');
-});
+
 
 
 app.use('/api/products', productRoute);
@@ -70,22 +67,21 @@ app.get('/api/config/paypal', (req,res) => res.send({clientId: process.env.PAYPA
 const __dirname = path.resolve(); // set __dirname to current directory
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
 
-// ************************* ย้ายส่วนนี้ไปที่ productRoute.js ****************************** //
+// deploy
+if (process.env.NODE_ENV === 'production'){
+    // set static folder
+    app.use(express.static(path.join(__dirname, '/frontend/build')));
 
-// เมื่อได้รับ url '/api/products' จะอ่านข้อมูล และจะทำการแสดง(respond) ข้อมูล products ในลักษณะของ json
-// app.get('/api/products', (req,res) => {
-//     res.json(products)
-// });
+    // any route that is not api will be redirected to index.html
+    app.get('*', (req,res) => res.sendFile(path.resolve9(__dirname, 'frontend', 'build', 'index.html')));
 
-// ค้นหาสินค้าในอาร์เรย์ products โดยใช้ Array.find() โดยตรวจสอบว่า _id ของสินค้าตรงกับค่าของพารามิเตอร์ :id ที่รับมา.
-// app.get('/api/products/:id', (req, res) => {
-//     const product = products.find((p) => (p._id === req.params.id))
-//     res.json(product)
-// })
+} else {
+    // เมื่อได้รับ url '/' จะอ่านข้อมูล และจะทำการแสดง(respond) ข้อความ Api is Running... บน port 5000
+    app.get('/', (req,res) => {
+        res.send('Api is Running...');
+});
+}
 
-// ***************************************************************** //
-
-// ทำการ set เมื่อเกิดการป้อน get request url ที่ไม่ได้ระบุ 
 app.use(notFound)
 app.use(errorHandler)
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Badge, Navbar , Nav , Container, Image, NavDropdown} from 'react-bootstrap';
-import {FaShoppingCart, FaUser, FaStar} from 'react-icons/fa';
+import {FaShoppingCart, FaUser, FaStar, FaFacebook, FaLine, FaPhone} from 'react-icons/fa';
 // import logoImage from '../../public/logo-removebg-preview.png'
 import logo from '../../src/assests/logo-removebg-preview.png'
 import { LinkContainer } from 'react-router-bootstrap'
@@ -51,14 +51,14 @@ const Header = () => {
 
                         {/* NaveBar Nenu */}
                         <Nav className='ms-auto'>
-                            <LinkContainer to='/promotion'>
+                            <LinkContainer to='/promotion' disabled={!userInfo || !userInfo.isAdmin}>
                                 <Nav.Link>
                                     <FaStar/> Promotion
                                 </Nav.Link>
                             </LinkContainer>
                             <LinkContainer to='/cart'>
                                 <Nav.Link>
-                                    <FaShoppingCart/> Cart
+                                    <FaShoppingCart/> ตะกร้าสินค้า
                                     {
                                         cartItems.length > 0 && (
                                             <Badge pill bg='success' style={{marginLeft:'5px'}}>
@@ -68,6 +68,29 @@ const Header = () => {
                                     }
                                 </Nav.Link>
                             </LinkContainer>
+
+                            {/* contrac us */}
+                            <NavDropdown title='ติดต่อเรา'>
+                                {/* Facebok */}
+                                <NavDropdown.Item as='a' href='https://www.facebook.com/p/%E0%B9%84%E0%B8%AD%E0%B8%AA%E0%B8%84%E0%B8%A3%E0%B8%B5%E0%B8%A1%E0%B9%84%E0%B8%9C%E0%B9%88%E0%B8%97%E0%B8%AD%E0%B8%87%E0%B8%9B%E0%B8%A3%E0%B8%B0%E0%B8%8A%E0%B8%B2%E0%B8%8A%E0%B8%B7%E0%B9%88%E0%B8%99Tel0863836984-100057478269796/?paipv=0&eav=AfZFgnaZNMBK_K1WKBkPRzbW1Q3MKds8iWQMkekhSoaR1i6E66r5RQIHZRnxjrrxuSM&_rdr'
+                                    target='_blank'
+                                >
+                                    <FaFacebook style={{color: 'blue'}}/> Facebook
+                                </NavDropdown.Item>
+
+                                {/* Line */}
+                                <NavDropdown.Item as='a' href='https://lin.ee/qanl8O0'
+                                    target='_blank'
+                                >
+                                    <FaLine style={{color:'#008556'}}/> Line
+                                </NavDropdown.Item>
+
+                                {/* Tell */}
+                                <NavDropdown.Item as='a' href='tel:0863836984'>
+                                    <FaPhone /> โทร: 086-383-6984
+                                </NavDropdown.Item>
+                                
+                            </NavDropdown>
 
                             {/* userInfo */}
                             {userInfo ? (

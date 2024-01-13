@@ -11,7 +11,7 @@ import Product from '../models/productModel.js'
 // Get All Products
 const getProducts = asyncHandler(async(req,res) => {
     // pageSize
-    const pageSize = 11;
+    const pageSize = 8;
     const page = Number(req.query.pageNumber) || 1;
 
     // search
@@ -160,7 +160,7 @@ const creatProductReview = asyncHandler(async(req,res)=>{
 // @route   GET /api/products/top
 // @access  Public
 const getTopProducts = asyncHandler(async(req,res)=>{
-    const products = await Product.find({}).sort({rating: -1}).limit(8);
+    const products = await Product.find({ _id: { $ne: '6575f96ad7ac8c1c63c7c097' } }).sort({rating: -1}).limit(5);
     res.status(200).json(products)
 })
 
